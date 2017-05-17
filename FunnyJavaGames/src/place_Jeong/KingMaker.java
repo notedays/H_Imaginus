@@ -37,7 +37,7 @@ public class KingMaker {
 	
 	void play(){
 		while(true){
-			System.out.println("*~~~ 현재 "+player.name+" 님의 계급은 "+grades[player.grade - 1]+" 입니다. ~~~*");
+			System.out.println("\n*~~~ 현재 "+player.name+" 님의 계급은 "+grades[player.grade - 1]+" 입니다. ~~~*");
 			if(player.grade < 4){
 				System.out.println("다음 계급인 "+grades[player.grade]+"을 만났습니다!!!");
 				Person oponent = getGrade(grades[player.grade], player.grade+1);
@@ -51,7 +51,7 @@ public class KingMaker {
 	void battle(Person oponent){
 		do{	
 			// @ 3초 카운트
-			System.out.print("카운트 시작 !!   ");
+			System.out.print("\n카운트 시작 !!   ");
 			for (int i = 3; i > 0; i--) {
 				System.out.print(i+"..");
 				try {
