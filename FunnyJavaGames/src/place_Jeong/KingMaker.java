@@ -66,12 +66,7 @@ public class KingMaker {
 			int oponentIdx = (int) (Math.random() * 3);
 			
 			// # 플레이어가 낸 가위 or 바위 or 보
-			System.out.print("무엇을 내시겠습니까? [가위/바위/보] : ");
-			String playerRPS = scan.next();
-			int playerIdx = -1;
-			for (int i = 0; i < rockPaperScissors.length; i++) {
-				if( rockPaperScissors[i].equals(playerRPS) ) playerIdx = i;
-			}
+			int playerIdx = inputRockPaperScissors();
 			
 			System.out.println("상대 : "+rockPaperScissors[oponentIdx] +" / "+player.name+" : "+rockPaperScissors[playerIdx]);
 			if(oponentIdx == playerIdx){
@@ -111,6 +106,16 @@ public class KingMaker {
 		}while(true);
 	}
 	
+	int inputRockPaperScissors(){
+		System.out.print("무엇을 내시겠습니까? [가위/바위/보] : ");
+		String playerRPS = scan.next();
+		int idx = -1;
+		for (int i = 0; i < rockPaperScissors.length; i++) {
+			if( rockPaperScissors[i].equals(playerRPS) ) idx = i;
+		}
+		return ( idx == -1 ) ? inputRockPaperScissors() : idx;
+	}
+	
 	Person getGrade(String name, int grade){
 		Person person;
 		switch (grade) {
@@ -135,7 +140,7 @@ public class KingMaker {
 	void downgrade(){
 		player = getGrade(player.name, player.grade -1);
 		if(player.grade == 0){
-			System.out.println(player.name+"은 결국 신분 세탁을 하지 못하고... 영원히 농노의 삶을 살게 되었습니다.... \n게임 오버");
+			System.out.println("비루한 인생 "+player.name+" 은 결국 신분 세탁을 하지 못하고... 영원히 농노의 삶을 살게 되었습니다.... \n게임 오버");
 			System.exit(1);
 		}
 	}
