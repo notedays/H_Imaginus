@@ -46,6 +46,11 @@ public class SpeedGame {
 				long differ = Math.abs( inputTime - (util.timeNow + 1000) );
 				long point = 1000 - (differ > 1000 ? 1000 : differ);
 				
+				if(point > 0){
+					System.out.println("나이스!! 획득 포인트 : "+point);
+				}else{
+					System.out.println("박자가 엉망 진창이야!!! 정신 똑바로 차려!!!");
+				}
 				players[j].point += point;
 			}
 			
@@ -95,7 +100,7 @@ class TimerUtil{
 			@Override
 			public void run() {
 				timeNow = System.currentTimeMillis();
-				int countLimit = 3;
+				int countLimit = 4;
 				
 				while(true){
 					long timeAfter = System.currentTimeMillis();
