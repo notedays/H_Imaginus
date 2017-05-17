@@ -43,7 +43,8 @@ public class SpeedGame {
 				System.out.println("~~~~ "+players[j].name +"의 차례 ~~~~");
 				util.timerStart();
 				long inputTime = inputKey();
-				long point = 1000 - Math.abs( inputTime - (util.timeNow + 1000) );
+				long differ = Math.abs( inputTime - (util.timeNow + 1000) );
+				long point = 1000 - (differ > 1000 ? 1000 : differ);
 				
 				players[j].point += point;
 			}
@@ -63,7 +64,7 @@ public class SpeedGame {
 	}
 	
 	long inputKey(){
-		String d = scan.next();
+		scan.next();
 		return System.currentTimeMillis();
 	}
 	
