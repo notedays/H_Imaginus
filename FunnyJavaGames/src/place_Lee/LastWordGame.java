@@ -1,4 +1,4 @@
-package place_Share;
+package place_Lee;
 
 import java.util.*;
 
@@ -31,6 +31,14 @@ public class LastWordGame {
 			player[i] = new Player(name);
 		}
 
+	}
+	
+	public void play(){
+		for(int i = 0; i<player.length;i++){
+			System.out.println((i+1)+"번째 참가자 단어:");
+			String word1 = scan.next();
+			System.out.println(word1);
+		}
 	}
 
 }

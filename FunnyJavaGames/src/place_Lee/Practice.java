@@ -5,9 +5,8 @@ public class Practice {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		Random r = new Random();
-		int a = r.nextInt(3);
-		System.out.println(a);
+		String a = "가나다라마바사";
+		System.out.println(a.charAt(a.lastIndexOf(7)));
 		
 		
 	}

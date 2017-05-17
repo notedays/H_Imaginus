@@ -24,7 +24,7 @@ public class KingMaker {
 	Scanner scan = new Scanner(System.in);
 	String[] grades = {"거지","시민","귀족","왕"};
 	String[] rockPaperScissors = {"가위","바위","보"};
-	Person player;
+	Person player; 
 	
 	
 	public KingMaker() {
