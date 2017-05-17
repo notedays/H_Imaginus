@@ -34,28 +34,32 @@ class Player{
 	int point;
 }
 
-class TimerUtil extends Thread{
+//# 3초 카운트 해주며 마지막 1초 카운트의 시간 값을 저장하는 클래스
+class TimerUtil{
 	long timeNow;
 	
-	@Override
-	public void run() {
-		timeNow = System.currentTimeMillis();
-		int countLimit = 3;
-		
-		while( true ){
-			long timeAfter = System.currentTimeMillis();
-			if((timeAfter - timeNow) / 1000 >= 1){
-				timeNow = timeAfter;
-				System.out.println(countLimit+" 초!!!");
-				countLimit--;
-				
-				// # 카운트가 1초일때 바로 타이머 종료
-				if(countLimit < 1) break;
-			}
-		}
-	}
-	
 	void timerStart(){
-		start();
+		new Runnable() {
+			@Override
+			public void run() {
+				timeNow = System.currentTimeMillis();
+				int countLimit = 3;
+				
+				while(true){
+					long timeAfter = System.currentTimeMillis();
+					if((timeAfter - timeNow) / 1000 >= 1){
+						timeNow = timeAfter;
+						System.out.println(countLimit+" 초!!!");
+						countLimit--;
+						
+						// # 카운트가 1초일때 바로 타이머 종료
+						if(countLimit < 1) {
+							break;
+						}
+					}
+				}
+			}
+		}.run();
 	}
 }
+
