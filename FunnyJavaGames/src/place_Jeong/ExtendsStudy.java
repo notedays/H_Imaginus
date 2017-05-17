@@ -22,6 +22,9 @@ class BasicHouse{
 // # 기존의 집에 컬러만 바꾼 집
 class WhiteHouse extends BasicHouse{
 	public WhiteHouse() {
-		this.color = "하얀 색";
+		this.name = "하얀 집";
+		this.color = "하얀 색"; 
+		// WhiteHouse 클래스 내의 어디에도 color 라는 변수는 정의 되어 있지 않지만 this.color 가 가능한 이유는 
+		// WhiteHouse가 BasicHouse를 상속하고 있기 때문에 BasicHouse의 color 라는 변수를 이용할 수 있기 때문
 	}
 }
