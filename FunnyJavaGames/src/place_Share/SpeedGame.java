@@ -29,7 +29,7 @@ public class SpeedGame {
 	
 }
 
-class Player{
+class SpeedPlayer{
 	String name;
 	int point;
 }
