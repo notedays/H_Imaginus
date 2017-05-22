@@ -6,7 +6,7 @@ public class Practice {
 		// TODO Auto-generated method stub
 
 		String a = "가나다라마바사";
-		System.out.println(a.charAt(a.lastIndexOf(7)));
+		System.out.println(a.charAt(a.lastIndexOf()));
 		
 		
 	}
