@@ -47,10 +47,10 @@ public class JukchangMain {
 			}
 			case 2: {
 				if (teacher.danger(teacher.getSpeed())) {
-					student.setHp(teacher.getHp() - 1);
+					teacher.setHp(teacher.getHp() - 1);
 					System.out.println("죽창을 깎으며 아이들을 선동했습니다.반응이 좋습니다. 선생HP-1");
 				} else {
-					teacher.setHp(teacher.getHp() - 1);
+					student.setHp(student.getHp() - 1);
 					System.out.println("죽창을 깎다가 손이 베였습니다. 학생HP-1");
 				}
 				System.out.printf("선생님HP:%d,진도의상태가?%d 학생HP:%d\n", teacher.getHp(), teacher.getSpeed(), student.getHp());
