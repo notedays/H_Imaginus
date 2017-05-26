@@ -7,12 +7,19 @@ public class NarutoRpg {
 	public static void main(String[] args) {
 		new NarutoRpg();
 	}
+	// # 버전 변수
+	static float version = 0.1f;
 	
 	Scanner sc = new Scanner(System.in);
+	
+	// # 캐릭터
 	Character character;
 	
+	// # Action 행동 제어 클래스 -- 싱글 톤 적용
+	Action action = Action.getInstance();
+	
 	public NarutoRpg() {
-		System.out.println("나루토 RPG를 시작합니다.");
+		System.out.println("===== Naruto RPG ver."+version+" =====");
 		
 		// # 배경 음악 재생
 		new Thread(){
@@ -20,7 +27,7 @@ public class NarutoRpg {
 				SoundPlayer.playBGM(new File("resources/naruto_energy.mp3"));
 			};
 		}.start();
-		
+	
 		// # 캐릭터 선택
 		selectCharacter();
 		
@@ -43,6 +50,7 @@ public class NarutoRpg {
 	}
 	
 	private void gameStart(){
+		
 		String[] actionNames = {"전투 하기","정보 보기","아이템 상점","스킬 배우기"};
 		int actionNo = -1;
 		do{
@@ -62,7 +70,7 @@ public class NarutoRpg {
 	private void action(int actionNo){
 		switch (actionNo) {
 		case Action.BATTLE : // # 전투하기
-			Action.getInstance().battle();
+			action.battle();
 			break;
 		}
 	}

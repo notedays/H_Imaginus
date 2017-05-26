@@ -2,7 +2,7 @@ package narutoRPG;
 
 public class Inventory<E extends Item> {
 	
-	private Item[] inven = new Item[10];
+	private Object[] inven = new Object[10];
 	
 	public int addItem(E item){
 		int idx = findEmptyInven();
@@ -14,6 +14,11 @@ public class Inventory<E extends Item> {
 	
 	public void dropItem(int idx){
 		if( isUsableIdx(idx) ) inven[idx] = null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public E getItem(int idx){
+		return isUsableIdx(idx) ? (E) inven[idx] : null;
 	}
 	
 	private int findEmptyInven(){

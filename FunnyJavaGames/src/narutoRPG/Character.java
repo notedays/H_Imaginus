@@ -1,14 +1,14 @@
 package narutoRPG;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public enum Character {
 	
-	NARUTO(1,"나루토", 20,20, 10,10, new Inventory<Item>(),new HashMap<String,Integer>()),
-	SASUKE(2,"사스케", 20,20, 10,10, new Inventory<Item>(),new HashMap<String,Integer>());
+	NARUTO(1,"나루토", 20,20, 10,10, new Inventory<Item>(), new ArrayList<Skill>()),
+	SASUKE(2,"사스케", 20,20, 10,10, new Inventory<Item>(), new ArrayList<Skill>());
 	
-	private final int no;
+	private final int code;
 	private final String name;
 	private int hp;
 	private int maxHp;
@@ -16,21 +16,48 @@ public enum Character {
 	private int maxChakura;
 	
 	private final Inventory<Item> inventory;
-	private final Map<String,Integer> skillMap;
+	private final List<Skill> skillList;
 	
-	private Character(int no, String name, int hp, int maxHp, int chakura, int maxChakura, Inventory<Item> inventory, Map<String, Integer> skillMap) {
-		this.no = no;
+	private Character(int code, String name, int hp, int maxHp, int chakura, int maxChakura, Inventory<Item> inventory, List<Skill> skillList) {
+		this.code = code;
 		this.name = name;
 		this.hp = hp;
 		this.maxHp = maxHp;
 		this.chakura = chakura;
 		this.maxChakura = maxChakura;
 		this.inventory = inventory;
-		this.skillMap = skillMap;
+		this.skillList = skillList;
 	}
 
-	public int getNo() {
-		return no;
+	// # 추가 메소드
+	public boolean obtainItem(Item item){
+		return inventory.addItem(item) != -1;
+	}
+	
+	public int getDamaged(int damage) {
+		hp = ( hp >= damage ) ? hp-damage : 0;
+		if( hp >= damage ){
+			hp -= damage;
+		}else{
+			hp = 0;
+			die();
+		}
+		return hp;
+	}
+	
+	public void die(){
+		if(code == 1){
+			System.out.println(name+"는 호카게가 되지 못하고 치명적인 피해를 입고 쓰러졌습니다.");
+		}else{
+			System.out.println(name+"는 형 이타치의 복수를 하지 못하고 치명적인 피해를 입고 쓰러졌습니다.");
+		}
+		System.out.println("=== 게임 오버 ===");
+		System.exit(0);
+	}
+	
+	// # GETTER / SETTER =================
+	public int getCode() {
+		return code;
 	}
 
 	public String getName() {
@@ -41,8 +68,8 @@ public enum Character {
 		return inventory;
 	}
 
-	public Map<String, Integer> getSkillMap() {
-		return skillMap;
+	public List<Skill> getskillList() {
+		return skillList;
 	}
 
 	public int getHp() {
@@ -76,6 +103,4 @@ public enum Character {
 	public void setMaxChakura(int maxChakura) {
 		this.maxChakura = maxChakura;
 	}
-	
-	
 }
