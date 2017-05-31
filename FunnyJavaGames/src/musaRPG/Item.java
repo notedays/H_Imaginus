@@ -2,19 +2,23 @@ package musaRPG;
 
 public enum Item {
 	
-	SHURIKEN(1,"수리검","닌자들이 기본으로 가지고 다니는 수리검", 5),
-	KUNAI(2,"쿠나이","던지는 용으로도 근접전에서도 쓸 수 있는 쿠나이", 10);
+	// # 무기
+	KITCHEN_KNIFE(1,"식칼","일반 가정집에서 흔히 볼 수 있는 식칼", 5),
+	WOOD_SWORD(2,"목검","연습용으로 많이 쓰이는 목검", 10),
+	
+	// # 몬스터 보상
+	DOG_BORN(1000,"개 뼈다귀","미친 개의 뼈다귀로 잘 다듬으면 기본적인 무기로 생성 가능해 보인다.", 6);
 	
 	private final int code;
 	private final String name;
 	private final String explanation;
-	private final int attack;
+	private final int value;
 	
-	private Item(int code, String name, String explanation, int attack) {
+	private Item(int code, String name, String explanation, int value) {
 		this.code = code;
 		this.name = name;
 		this.explanation = explanation;
-		this.attack = attack;
+		this.value = value;
 	}
 	
 	public Item fromName(String name){
@@ -33,8 +37,8 @@ public enum Item {
 		return explanation;
 	}
 
-	public int getAttack() {
-		return attack;
+	public int getValue() {
+		return value;
 	}
 	
 }

@@ -1,5 +1,7 @@
 package musaRPG;
 
+import java.util.Random;
+
 // # 나루토 게임의 행동 관련 된 작업을 할 클래스
 public class ActionModel {
 	
@@ -30,13 +32,19 @@ public class ActionModel {
 	}
 	
 	public Enemy generateEnemy(){
-		Enemy[] enemyArray = Enemy.values();
-		return character.getLevel() <= enemyArray.length ? enemyArray[character.getLevel()-1] : enemyArray[enemyArray.length-1];
+		return new Enemy(character.getLevel());
 	}
 	
 	public void battle(int no, Enemy enemy){
 		switch (no) {
 		case NORMAL_ATTACK:{
+			int enemyHp = enemy.getDamaged(character.getAttack());
+			int characterHp = character.getDamaged(enemy.getAttack());
+			
+			if( enemyHp == 0 ){
+				Item item = enemy.dropItem();
+				character.battleWin(enemy.getExp(), item);
+			}
 			break;
 		}
 		case SKILL:{

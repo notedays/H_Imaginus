@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum Character {
-	MUHYUL(1,"무휼","초급 무사", 1, 0,30, 20,20, 10,10, new Inventory<Item>(), new ArrayList<Skill>()),
-	ILJIMAE(2,"일지매","도둑", 1, 0,30, 20,20, 10,10, new Inventory<Item>(), new ArrayList<Skill>());
+	MUHYUL(1,"무휼","초급 무사", 1, 5, 0,30, 20,20, 10,10, new Inventory<Item>(), new ArrayList<Skill>()),
+	ILJIMAE(2,"일지매","도둑", 1, 5, 0,30, 20,20, 10,10, new Inventory<Item>(), new ArrayList<Skill>());
 	
 	private final int code;
 	private final String name;
 	private String grade;
 	private int level;
+	private int attack;
 	private int exp;
 	private int maxExp;
 	private int hp;
@@ -21,11 +22,12 @@ public enum Character {
 	private final Inventory<Item> inventory;
 	private final List<Skill> skillList;
 	
-	private Character(int code, String name, String grade, int level, int exp, int maxExp,  int hp, int maxHp, int mp, int maxMp, Inventory<Item> inventory, List<Skill> skillList) {
+	private Character(int code, String name, String grade, int level, int attack, int exp, int maxExp,  int hp, int maxHp, int mp, int maxMp, Inventory<Item> inventory, List<Skill> skillList) {
 		this.code = code;
 		this.name = name;
 		this.grade = grade;
 		this.level = level;
+		this.attack = attack;
 		this.exp = exp;
 		this.maxExp = maxExp;
 		this.hp = hp;
@@ -38,30 +40,29 @@ public enum Character {
 
 	// # 추가 메소드
 	public boolean obtainItem(Item item){
-		return inventory.addItem(item) != -1;
+		return inventory.addItem(item);
 	}
 	
-	public void battleWin(int exp, Item[] items){
+	public void battleWin(int exp, Item item){
 		this.exp += exp;
-		if(exp >= maxExp) levelUp(getLevel()+1);
+		if(exp >= maxExp) levelUp();
+		
+		if(item != null){
+			System.out.println("\n아이템 ["+item.getName()+"] 을(를) 획득했습니다.");
+		}
 	}
 	
-	public void levelUp(int level){
-		this.level = level;
-		this.exp = 0;
+	public void levelUp(){
+		++this.level;
 		this.maxExp = level * 30;
-		this.maxHp = level * 15;
-		this.maxMp = level * 10;
+		this.exp = 0;
+		this.attack += 5;
+		this.maxHp += 15;
+		this.maxMp += 10;
 	}
 	
 	public int getDamaged(int damage) {
 		hp = ( hp >= damage ) ? hp-damage : 0;
-		if( hp >= damage ){
-			hp -= damage;
-		}else{
-			hp = 0;
-			die();
-		}
 		return hp;
 	}
 	
@@ -76,7 +77,6 @@ public enum Character {
 			System.out.println(name+"는  치명적인 피해를 입고 쓰러졌습니다.");
 		}
 		System.out.println("=== 게임 오버 ===");
-		System.exit(0);
 	}
 	
 	// # GETTER / SETTER =================
@@ -116,7 +116,7 @@ public enum Character {
 		return mp;
 	}
 
-	public void setmp(int mp) {
+	public void setMp(int mp) {
 		this.mp = mp;
 	}
 
@@ -147,6 +147,13 @@ public enum Character {
 	public void setGrade(String grade) {
 		this.grade = grade;
 	}
-	
-	
+
+	public int getAttack() {
+		return attack;
+	}
+
+	public void setAttack(int attack) {
+		this.attack = attack;
+	}
+
 }

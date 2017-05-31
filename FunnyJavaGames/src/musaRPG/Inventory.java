@@ -1,35 +1,38 @@
 package musaRPG;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Inventory<E extends Item> {
 	
-	private Object[] inven = new Object[20];
+	private static final int MAX_SIZE = 10;
+	private Map<Item, Integer> inven = new HashMap<Item,Integer>();
 	
-	public int addItem(E item){
-		int idx = findEmptyInven();
-		if( isUsableIdx(idx) ){
-			inven[idx] = item;
+	public boolean addItem(E item){
+		int no = inven.get(item);
+		if(no == 0){
+			if( inven.values().size() <= MAX_SIZE ){
+				inven.put(item, 1);
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			inven.put(item, no+1);
+			return true;
 		}
-		return idx;
 	}
 	
-	public void dropItem(int idx){
-		if( isUsableIdx(idx) ) inven[idx] = null;
-	}
-	
-	@SuppressWarnings("unchecked")
-	public E getItem(int idx){
-		return isUsableIdx(idx) ? (E) inven[idx] : null;
-	}
-	
-	private int findEmptyInven(){
-		int idx = -1;
-		for (int i = 0; i < inven.length; i++) {
-			if( inven[i] == null ) idx = i;
+	public void dropItem(Item item){
+		int no = inven.get(item);
+		if(no > 1){
+			inven.put(item, no-1);
+		}else{
+			inven.remove(item);
 		}
-		return idx;
 	}
 	
-	private boolean isUsableIdx(int idx){
-		return idx >= 0 && idx < inven.length;
+	public int getItemCount(Item item){
+		return inven.get(item);
 	}
 }

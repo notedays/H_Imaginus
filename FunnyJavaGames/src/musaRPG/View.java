@@ -19,7 +19,7 @@ public class View {
 	}
 
 
-	public String[] actionNames = { "전투 하기", "정보 보기", "아이템 상점", "스킬 배우기" };
+	public final static String[] actionNames = { "전투 하기", "정보 보기", "아이템 상점", "스킬 배우기" };
 
 	public int selectAction(Character character) {
 		System.out.println("\n플레이어 [ " + character.getName() + " ] ");
@@ -31,7 +31,7 @@ public class View {
 	}
 
 	public int selectBattle(Character character, Enemy enemy) {
-		System.out.println(enemy.getName() + " 이 나타났다!!!");
+		System.out.println("\n적 ["+ enemy.getName() + "] 등장!!!");
 		String[] battleNames = { "일반 공격", "기술 사용", "피하기", "도망가기" };
 		for (int i = 1; i <= battleNames.length; i++) {
 			System.out.println(i + ". " + battleNames[i - 1]);
@@ -48,7 +48,7 @@ public class View {
 			} catch (Exception e) {
 				System.out.println("잘못된 번호를 입력하였습니다.");
 			}
-		} while (no > 0 && no <= limitNo);
+		} while (no < 1 || no > limitNo);
 		return no;
 	}
 }
