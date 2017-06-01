@@ -48,6 +48,7 @@ public enum Character {
 		if(exp >= maxExp) levelUp();
 		
 		if(item != null){
+			inventory.addItem(item);
 			System.out.println("\n아이템 ["+item.getName()+"] 을(를) 획득했습니다.");
 		}
 	}
@@ -68,15 +69,6 @@ public enum Character {
 	
 	public void learnSkill(Skill skill){
 		skillList.add(skill);
-	}
-	
-	public void die(){
-		if(code == 1){
-			System.out.println(name+"는 조선제일검이 되지 못하고 치명적인 피해를 입고 쓰러졌습니다.");
-		}else{
-			System.out.println(name+"는  치명적인 피해를 입고 쓰러졌습니다.");
-		}
-		System.out.println("=== 게임 오버 ===");
 	}
 	
 	// # GETTER / SETTER =================

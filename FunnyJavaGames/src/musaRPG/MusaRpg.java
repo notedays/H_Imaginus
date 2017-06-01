@@ -16,15 +16,11 @@ public class MusaRpg {
 	// # 캐릭터
 	Character character;
 	
-	// # Action 행동 제어 클래스 -- 싱글 톤 적용
-	ActionModel action = ActionModel.getInstance();
-	
 	public MusaRpg() {
 		System.out.println("===== Musa RPG ver."+version+" =====");
 		
 		// # 캐릭터 선택
 		character = view.selectCharacter();
-		action.initialize(character);
 		
 		String[] musics = {"muhyul_bgm.mp3","iljimae_bgm.mp3"}; 
 		// # 배경 음악 재생
@@ -38,7 +34,11 @@ public class MusaRpg {
 		int actionNo = -1;
 		do{
 			actionNo = view.selectAction(character);
-			action(actionNo);
+			try {
+				action(actionNo);
+			} catch (Exception e) {
+				
+			}
 		}while(actionNo <= view.actionNames.length );
 		
 		// # 프로그램 종료
@@ -46,13 +46,47 @@ public class MusaRpg {
 		System.exit(1);
 	}
 	
-	private void action(int actionNo){
+	// # 기본 행동
+	private void action(int actionNo) throws Exception{
 		switch (actionNo) {
-		case ActionModel.BATTLE : // # 전투하기
-			Enemy enemy = action.generateEnemy();
-			int no = view.selectBattle(character, enemy);
-			action.battle(no, enemy);
+		case ActionCode.BATTLE : // # 전투하기
+			Enemy enemy = generateEnemy();
+			int no = view.selectBattle(enemy);
+			battle(no, enemy);
 			break;
 		}
+	}
+	
+	// # 전투 관련 행동
+	public void battle(int no, Enemy enemy) throws Exception{
+		switch (no) {
+		case ActionCode.NORMAL_ATTACK:{
+			int enemyHp = enemy.getDamaged(character.getAttack());
+			int characterHp = character.getDamaged(enemy.getAttack());
+			
+			if( characterHp == 0 ){
+				if( view.die(character) ){
+					throw new Exception();
+				}
+			}else if( enemyHp == 0 ){
+				Item item = enemy.dropItem();
+				character.battleWin(enemy.getExp(), item);
+			}else{
+			}
+		}
+		case ActionCode.SKILL:{
+			break;
+		}
+		case ActionCode.DEFENSE:{
+			break;
+		}
+		case ActionCode.AVOID:{
+			break;
+		}
+		}
+	}
+	
+	private Enemy generateEnemy(){
+		return new Enemy(character.getLevel());
 	}
 }

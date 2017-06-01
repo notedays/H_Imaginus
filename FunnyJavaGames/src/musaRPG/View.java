@@ -30,7 +30,7 @@ public class View {
 		return inputNo(actionNames.length + 1);
 	}
 
-	public int selectBattle(Character character, Enemy enemy) {
+	public int selectBattle(Enemy enemy) {
 		System.out.println("\n적 ["+ enemy.getName() + "] 등장!!!");
 		String[] battleNames = { "일반 공격", "기술 사용", "피하기", "도망가기" };
 		for (int i = 1; i <= battleNames.length; i++) {
@@ -51,4 +51,16 @@ public class View {
 		} while (no < 1 || no > limitNo);
 		return no;
 	}
+	
+	public boolean die(Character character){
+		if(character.getCode() == 1){
+			System.out.println(character.getName()+"는 조선제일검이 되지 못하고 치명적인 피해를 입고 쓰러졌습니다.");
+		}else{
+			System.out.println(character.getName()+"는  치명적인 피해를 입고 쓰러졌습니다.");
+		}
+		System.out.println("=== 게임 오버 ===");
+		System.out.println("다시 하시겠습니까? [ Yes(1) / No(2) ] : ");
+		return inputNo(2) == 1;
+	}
+
 }
