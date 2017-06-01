@@ -2,10 +2,8 @@ package SalesManagement;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 public class SalesImpl implements SalesInterface {
@@ -13,7 +11,6 @@ public class SalesImpl implements SalesInterface {
 	List<ProductVO> Plist = new ArrayList<>();
 	List<ProductVO> Slist = new ArrayList<>();
 	List<SaleVO> SaleList = new ArrayList<>();
-	Map<String, ProductVO> Smap = new HashMap<>();
 
 	Calendar cal = Calendar.getInstance();
 
@@ -72,7 +69,7 @@ public class SalesImpl implements SalesInterface {
 
 	@Override
 	public void showInterface3() {
-		System.out.print("1.판매내역입력 2.판매현황리스트 3.판매현황검색 4.이전메뉴");
+		System.out.print("1.판매내역입력 2.판매현황리스트 3.제품별판매현황 4.고객조회 5.이전메뉴");
 		int a = sc.nextInt();
 		switch (a) {
 		case 1:
@@ -86,6 +83,8 @@ public class SalesImpl implements SalesInterface {
 			searchSale();
 			break;
 		case 4:
+			searchBuyer();
+		case 5:
 			showInterface1();
 			break;
 		default:
@@ -146,6 +145,9 @@ public class SalesImpl implements SalesInterface {
 		ProductVO pvo = new ProductVO(code, a, b, d);
 		Plist.add(pvo);
 
+		System.out.println("상품이 정상적으로 등록되었습니다.");
+		System.out.println(pvo);
+
 		showInterface2();
 
 	}
@@ -167,7 +169,7 @@ public class SalesImpl implements SalesInterface {
 		int b = sc.nextInt();
 		pvo.setQuantity(b);
 
-		System.out.print("재고가 수정되었습니다.  ");
+		System.out.print("재고가 수정되었습니다. ");
 		System.out.println(pvo);
 
 		showInterface2();
@@ -202,9 +204,6 @@ public class SalesImpl implements SalesInterface {
 
 	}
 
-	
-	//판매량보다 재고가 작을 경우의 수 코딩
-	//시간나면 입력오류 예외처리하기
 	@Override
 	public void insertSale() {
 		ProductVO pvo;
@@ -220,20 +219,17 @@ public class SalesImpl implements SalesInterface {
 		pvo = checkCode(code);
 		System.out.print("판매한 수량을 입력해 주세요");
 		int a = sc.nextInt();
+		
+		if(a>pvo.getQuantity()){
+			System.out.println("재고가 부족합니다");
+			System.out.println(pvo);
+			showInterface3();
+		}
+		
 		System.out.print("구매자를 입력해 주세요");
 		String buyer = sc.next();
 		System.out.print("구매 날짜를 입력하세요");
 		String date = sc.next();
-
-/*		if (checkSaleCode(code) != null) {
-			svo = checkSaleCode(code);
-			pvo.setQuantity(pvo.getQuantity() - a);
-			svo.setQuantity(svo.getQuantity() + a);
-
-			salevo = new SaleVO(buyer, date, svo);
-			SaleList.add(salevo);
-			showInterface3();
-		}*/
 		
 		svo = new ProductVO(pvo.getCode(), pvo.getPname(), pvo.getPrice(), a);
 		Slist.add(svo);
@@ -248,18 +244,51 @@ public class SalesImpl implements SalesInterface {
 
 	@Override
 	public void searchSale() {
-
 		System.out.print("판매현황을 검색할 상품코드를 입력하세요");
-		int a = sc.nextInt();
-		if (checkSaleCode(a) == null) {
+		int code = sc.nextInt();
+		if (checkSaleCode(code) == null) {
 			System.out.println("판매내역이 존재하지 않습니다.");
 		}
-		ProductVO svo = checkSaleCode(a);
-		System.out.print(svo + " ");
-		a = +svo.getPrice() * svo.getQuantity();
-		System.out.println("총 판매액 : " + a);
+		
+		for(SaleVO temp : SaleList){
+			if(temp.getProductSale().getCode()==code){
+				System.out.print(temp);
+				int b = temp.getProductSale().getPrice()*temp.getProductSale().getQuantity();
+				System.out.println("총 판매액:"+b);
+			}
+		}
+		
 		showInterface3();
 
+	}
+
+	public SaleVO checkBuyer(String buyer){
+		SaleVO svo=null;
+		for(SaleVO a : SaleList){
+			if(a.getSname().equals(buyer)){
+				svo = a;
+				break;
+			}
+		}return svo;
+	}
+	
+	public void searchBuyer() {
+		System.out.print("조회할 구매자를 입력하세요");
+		String buyer = sc.next();
+		
+		if(checkBuyer(buyer)==null){
+			System.out.println("구매내역이 없습니다.");
+		}
+		
+		for(SaleVO temp : SaleList){
+			if(temp.getSname().equals(buyer)){
+				System.out.println(temp);
+			}
+		}
+		
+		
+		
+		showInterface3();
 	}
 
 	@Override
