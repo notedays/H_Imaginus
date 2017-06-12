@@ -7,7 +7,7 @@ public enum Character {
 	MUHYUL(1, "무휼", "초급 의병장", 1, 5, 0, 1, 1000, 100, 10, 10, 1000, new Inventory<Item>(), new ArrayList<Skill>(),
 			new ArrayList<Castles>(), new ArrayList<Companion>()), 
 	ILJIMAE(2, "일지매", "초급 의병장", 1, 5, 0, 1, 1000, 100, 10, 10, 1000,
-					new Inventory<Item>(), new ArrayList<Skill>(), new ArrayList<Castles>() , new ArrayList<Companion>());
+			new Inventory<Item>(), new ArrayList<Skill>(), new ArrayList<Castles>(), new ArrayList<Companion>());
 
 	private final int code;
 	private final String name;
@@ -25,11 +25,11 @@ public enum Character {
 	private final Inventory<Item> inventory;
 	public List<Skill> skillList;
 	private final List<Castles> castles;
-	public List<Companion> companions;
-
+	public List<Companion> companion;
+	
 	private Character(int code, String name, String grade, int level, int attack, int exp, int maxExp, int hp,
 			int maxHp, int mp, int maxMp, int money, Inventory<Item> inventory, List<Skill> skillList,
-			List<Castles> castles, List<Companion> companions) {
+			List<Castles> castles, List<Companion> companion) {
 		this.code = code;
 		this.name = name;
 		this.grade = grade;
@@ -45,7 +45,8 @@ public enum Character {
 		this.inventory = inventory;
 		this.skillList = skillList;
 		this.castles = castles;
-		this.companions = companions;
+		this.companion = companion;
+		
 	}
 
 	// # 추가 메소드
@@ -108,20 +109,6 @@ public enum Character {
 		}
 		System.out.println("=== 게임 오버 ===");
 		System.exit(1);
-	}
-
-	public void getCastle(Castles castle){
-		castles.add(castle);
-		castles.get(0).setAttack(300);
-		
-		
-		
-		if(castles.contains(castle)){
-			System.out.println("이미 배운 스킬입니다.");
-		}else{
-			castles.add(castle);
-			System.out.println(castle.getName()+"을 배웠습니다.");
-		}
 	}
 
 	// # GETTER / SETTER =================

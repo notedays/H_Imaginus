@@ -148,11 +148,12 @@ public class ActionModel {
 		}
 	}
 	
-	public void gather(){
-		
-		
+	public Companion gather(int code, Character character){
+		return new Companion(code, character.getLevel());
 	}
 	
-	
+	public void gatherPut(Companion companion){
+		character.companion.add(companion);
+	}
 
 }// actionModel문 종료

@@ -18,9 +18,4 @@ public class InventoryTest<T extends ItemTest> {
 		}
 		return true;
 	}
-	
-	public ItemTest getItem(){
-		
-	}
-	
 }

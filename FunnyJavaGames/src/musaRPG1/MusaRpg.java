@@ -91,7 +91,8 @@ public class MusaRpg {
 			int manageNo = view.manageList();
 			switch (manageNo) {
 			case ActionModel.GATHER:
-//				action.manage(manageNo);
+				int gatherNo = view.companionList();
+				action.gatherPut(action.gather(gatherNo, character));
 				
 				break;
 				

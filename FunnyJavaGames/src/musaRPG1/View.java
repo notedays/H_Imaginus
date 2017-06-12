@@ -68,12 +68,19 @@ public class View {
 	}
 	
 	public int manageList(){
-		String [] namageLists = { "병사 충원", "성벽 보수", "병사 배치" };
+		String [] namageLists = { "병사 충원", "성벽 보수", "병사 배치", "돌아가기"};
 		for (int i = 1; i <= namageLists.length; i++) {
 			System.out.println(i + ". " + namageLists[i - 1]);
 		}
 		return inputNo(namageLists.length);	
-		
+	}
+	
+	public int companionList(){
+		String [] companionLists = {"궁병 충원", "보병 충원", "기병 충원", "돌아가기"};
+		for (int i = 1; i<= companionLists.length; i++) {
+			System.out.println(i + ". " + companionLists[i-1]);
+		}
+		return inputNo(companionLists.length);
 	}
 	
 }
