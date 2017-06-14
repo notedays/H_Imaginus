@@ -12,22 +12,24 @@ public class Companion {
 	private int numberOfUnit;
 	
 	int[] codes = {1, 2, 3};
-	String[] names = {"궁사", "보병", "기병"};
+	static String[] names = {"궁사", "보병", "기병"};
 	String [] explanations = {"대 지상 상대로 강한 궁사", "대 궁사 상대로 강한 보병", "대 보병 상대로 강한 기병"};
 	
 	public Companion(int code, int level) {
 		this.code = code;
-		this.name = names[code];
+		this.name = names[code-1];
 		this.attack = +1;
 		this.defense = code+1;
 		this.hp = code*5;
 		this.maxHp = code*50;
-		this.explanation = explanations[ code ];
+		this.explanation = explanations[code-1];
 		this.numberOfUnit = level;
 	}
 	
 	
 	////getter, setter
+	
+	
 	public int getCode() {
 		return code;
 	}

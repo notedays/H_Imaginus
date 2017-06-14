@@ -59,7 +59,7 @@ public class View {
 		return no;
 	}
 	
-	public int skillList(){
+	public int selectSkill(){
 		String [] skillNames = { "스킬 익히기" , "스킬 삭제" , "돌아가기"};
 		for (int i = 1; i <= skillNames.length; i++) {
 			System.out.println(i + ". " + skillNames[i - 1]);
@@ -67,20 +67,35 @@ public class View {
 		return inputNo(skillNames.length);		
 	}
 	
-	public int manageList(){
-		String [] namageLists = { "병사 충원", "성벽 보수", "병사 배치", "돌아가기"};
+	public int selectManage(){
+		String [] namageLists = { "병사 충원", "성벽 보수", "병사 배치", "성 공격", "돌아가기"};
 		for (int i = 1; i <= namageLists.length; i++) {
 			System.out.println(i + ". " + namageLists[i - 1]);
 		}
 		return inputNo(namageLists.length);	
 	}
 	
-	public int companionList(){
-		String [] companionLists = {"궁병 충원", "보병 충원", "기병 충원", "돌아가기"};
+	public int selectCompanion(){
+		String [] companionLists = {"궁병 충원", "보병 충원", "공성추 충원", "돌아가기"};
 		for (int i = 1; i<= companionLists.length; i++) {
 			System.out.println(i + ". " + companionLists[i-1]);
 		}
 		return inputNo(companionLists.length);
 	}
 	
+	public int selectCastle(){
+		Castles [] castles = Castles.values();
+		for(int i=1; i <= castles.length; i++){
+			System.out.println(i + ". " + castles[i-1].getName() + " 공격");
+		}
+		return inputNo(castles.length);
+	}
+	
+	public int selectCastleBattle(){
+		String[] castleBattle = { "궁수 공격", "보병 공격", "공성추 공격", "돌아가기"};
+		for(int i = 1; i <= castleBattle.length; i++){
+			System.out.println(i + ". " + castleBattle[i-1]);
+		}
+		return inputNo(castleBattle.length);
+	}
 }

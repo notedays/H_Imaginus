@@ -17,14 +17,16 @@ public class ActionModel {
 
 	// # 전투 코드
 	public static final int NORMAL_ATTACK = 1;
-	public static final int SKILL = 2;
-	public static final int RUN = 3;
-	public static final int EVATION = 4;
+	public static final int SKILL_ATTACK = 2;
+	public static final int RUN_ATTACK = 3;
+	public static final int EVATION_ATTACK = 4;
 
 	// # 자원관리(성 관리)
-	public static final int GATHER = 1;
+	public static final int GATHER = 1;	// 병사 모집
 	public static final int ENFORCEMENT = 2; // 성벽 유지보수 및 강화
 	public static final int DEPLOYMENT = 3; // 성내 병력 배치
+	public static final int CASTLE_ATTACK = 4; // 성 공격
+	
 
 	// # 스킬 코드(SKILL_LEARN)
 	public static final int LEARN_SKILL = 1;
@@ -44,19 +46,31 @@ public class ActionModel {
 
 	// # 캐릭터 설정하기
 	Character character;
-	
+
 	public void initialize(Character character) {
 		this.character = character;
-		character.skillList.add(Skill.KNIFE_THROW);	// 기초 스킬 설정
+		character.skillList.add(Skill.KNIFE_THROW); // 기초 스킬 설정
+	}
+
+	public void generateCastleCompanion(Castles castle){
+		for(int i = 1; i <= Companion.names.length ; i++){
+			castle.cattleCompanionList.add(new Companion(i, castle.getLevel()));
+		}
 	}
 	
-	// # 기초 성 설정하기
-	Castles castle = Castles.MASAN;
+	public void castleAttack(Castles castle, int battleChoice){
+		//궁수 공격
+		System.out.println(castle.cattleCompanionList.get(0).getHp());
+		castle.cattleCompanionList.get(0).setHp(character.companion.get(0).getAttack());
+		System.out.println(castle.cattleCompanionList.get(0).getHp());
+		//보병 공격
+		//공성추 공격
+	}
 	
 	public Enemy generateEnemy() {
 		return new Enemy(character.getLevel());
 	}
-
+	
 	public void learnSkill(int no) {
 		switch (no) {
 		case LEARN_SKILL: {
@@ -127,9 +141,10 @@ public class ActionModel {
 
 	}// useSkill문 종료
 
-	public void evation(Enemy enemy) {
+	public boolean evation(Enemy enemy){
 		if (Math.random() < 0.3f) {
 			System.out.println("회피 성공!!");
+			return true;
 		} else {
 			character.setHp(character.getHp() - enemy.getAttack());
 			System.out.println("회피 실패!!");
@@ -137,23 +152,27 @@ public class ActionModel {
 			if (character.getHp() == 0) {
 				character.die();
 			}
+		}return false;
+	}
+
+	public boolean run(Enemy enemy) {
+		if ((int) (character.getHp() / 100) >= 0.3) {
+			System.out.println("전투에서 도피 합니다");
+			return true;
+		} else {
+			System.out.println("체력이 부족합니다");
+			return false;
 		}
 	}
 
-	public void run(Enemy enemy) {
-		if ((int) (character.getHp() / 100) >= 0.3) {
-			System.out.println("회피 성공!!");
-		} else {
-			System.out.println("체력이 부족합니다");
-		}
-	}
-	
-	public Companion gather(int code, Character character){
+	public Companion gather(int code, Character character) {
 		return new Companion(code, character.getLevel());
 	}
-	
-	public void gatherPut(Companion companion){
+
+	public void gatherPut(Companion companion) {
 		character.companion.add(companion);
 	}
 
+	
+	
 }// actionModel문 종료

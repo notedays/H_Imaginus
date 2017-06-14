@@ -1,6 +1,7 @@
 package musaRPG1;
 
 import java.io.File;
+import java.util.List;
 import java.util.Scanner;
 
 public class MusaRpg {
@@ -28,8 +29,11 @@ public class MusaRpg {
 		character = view.selectCharacter();
 		action.initialize(character);
 		
-		// # 시작 마을 
-		System.out.println(action.castle.getExplanation()+"에서 여정을 시작합니다.");
+		// # 시작성 부여(임시)
+		character.castles.add(Castles.MASAN_SUNG);
+		
+		// # 시작 동료 부여(임시)
+		character.companion.add(new Companion(1, character.getLevel()));
 
 		String[] musics = { "muhyul_bgm.mp3", "iljimae_bgm.mp3" };
 		// # 배경 음악 재생
@@ -59,17 +63,21 @@ public class MusaRpg {
 				int battleNo = view.selectBattle(character, enemy);
 				switch (battleNo) {
 				case ActionModel.NORMAL_ATTACK:
-		//			action.battle(1, enemy, 0);
+					action.normalAttack(enemy);
 					break;
-				case 2:
+				case ActionModel.SKILL_ATTACK:
 					int skillNo = view.selectSkill(character, enemy);
-			//		action.battle(2, enemy, skillNo);
+					action.useSkill(skillNo, enemy);
 					break;
-					
-				case 3:
+
+				case ActionModel.RUN_ATTACK:
+					if(action.run(enemy) == true)
+						return;
 					break;
-					
-				case 4:
+
+				case ActionModel.EVATION_ATTACK:
+					if(action.evation(enemy) == true)
+						return;
 					break;
 				}
 			}
@@ -83,26 +91,39 @@ public class MusaRpg {
 			break;
 		case ActionModel.SKILL_LEARN:
 
-			int no = view.skillList();
+			int no = view.selectSkill();
 			action.learnSkill(no);
 			break;
-			
+
 		case ActionModel.MANAGE_RESOURCE:
-			int manageNo = view.manageList();
+			int manageNo = view.selectManage();
+
 			switch (manageNo) {
 			case ActionModel.GATHER:
-				int gatherNo = view.companionList();
+				int gatherNo = view.selectCompanion();
 				action.gatherPut(action.gather(gatherNo, character));
-				
+				System.out.println();
 				break;
-				
+
 			case ActionModel.ENFORCEMENT:
-				
+
 				break;
-				
+
 			case ActionModel.DEPLOYMENT:
+
+				break;
+
+			case ActionModel.CASTLE_ATTACK: {
+				int choice = view.selectCastle();
+				Castles [] castleChoice = Castles.values();
+				Castles castle = castleChoice[choice-1];
+				action.generateCastleCompanion(castle);
+				
+				int battleChoice = view.selectCastleBattle();
+				action.castleAttack(castle, battleChoice);
 				
 				break;
+			}
 			}
 		}
 	}

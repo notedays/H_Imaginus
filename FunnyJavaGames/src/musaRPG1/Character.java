@@ -24,7 +24,7 @@ public enum Character {
 
 	private final Inventory<Item> inventory;
 	public List<Skill> skillList;
-	private final List<Castles> castles;
+	public List<Castles> castles;
 	public List<Companion> companion;
 	
 	private Character(int code, String name, String grade, int level, int attack, int exp, int maxExp, int hp,
