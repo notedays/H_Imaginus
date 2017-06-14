@@ -28,10 +28,10 @@ public class MusaRpg {
 		// # 캐릭터 선택
 		character = view.selectCharacter();
 		action.initialize(character);
-		
+
 		// # 시작성 부여(임시)
 		character.castles.add(Castles.MASAN_SUNG);
-		
+
 		// # 시작 동료 부여(임시)
 		character.companion.add(new Companion(1, character.getLevel()));
 
@@ -71,16 +71,16 @@ public class MusaRpg {
 					break;
 
 				case ActionModel.RUN_ATTACK:
-					if(action.run(enemy) == true)
+					if (action.run(enemy) == true)
 						return;
 					break;
 
 				case ActionModel.EVATION_ATTACK:
-					if(action.evation(enemy) == true)
+					if (action.evation(enemy) == true)
 						return;
 					break;
 				}
-			}
+			} // attack문 종료
 			break;
 
 		case ActionModel.SHOW_INFO:
@@ -89,11 +89,20 @@ public class MusaRpg {
 		case ActionModel.ITEM_MARKET:
 
 			break;
-		case ActionModel.SKILL_LEARN:
 
-			int no = view.selectSkill();
-			action.learnSkill(no);
-			break;
+		case ActionModel.SKILL_LEARN:
+			int choiceSkill = view.selectSkill();
+			switch (choiceSkill) {
+			case ActionModel.LEARN_SKILL:
+				int learnSkill = view.learnSkill();
+				action.learnSkills(learnSkill);
+				break;
+
+			case ActionModel.DELETE_SKILL:
+				int deleteSkill = view.deleteSkill(character);
+				action.deleteSkill(deleteSkill);
+				break;
+			}break;
 
 		case ActionModel.MANAGE_RESOURCE:
 			int manageNo = view.selectManage();
@@ -115,13 +124,13 @@ public class MusaRpg {
 
 			case ActionModel.CASTLE_ATTACK: {
 				int choice = view.selectCastle();
-				Castles [] castleChoice = Castles.values();
-				Castles castle = castleChoice[choice-1];
+				Castles[] castleChoice = Castles.values();
+				Castles castle = castleChoice[choice - 1];
 				action.generateCastleCompanion(castle);
-				
+
 				int battleChoice = view.selectCastleBattle();
 				action.castleAttack(castle, battleChoice);
-				
+
 				break;
 			}
 			}

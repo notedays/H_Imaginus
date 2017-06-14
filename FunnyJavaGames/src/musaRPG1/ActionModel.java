@@ -71,33 +71,21 @@ public class ActionModel {
 		return new Enemy(character.getLevel());
 	}
 	
-	public void learnSkill(int no) {
-		switch (no) {
-		case LEARN_SKILL: {
-			Skill[] skillList = Skill.values();
-			System.out.println("배울 수 있는 스킬 목록.");
-			for (int i = 1; i <= skillList.length; i++) {
-				System.out.print(i + ". " + skillList[i - 1].getName() + "  ");
-				System.out.print(" 요구 레벨: " + skillList[i - 1].getLevelLimit());
-				System.out.print(" 피해량: " + skillList[i - 1].getDamage());
-				System.out.print(" 마나소모: " + skillList[i - 1].getConsumeChakura());
-				System.out.print(" " + skillList[i - 1].getExplanation());
-				System.out.println();
-			}
-			System.out.print("어떤 스킬을 배우겠습니까?");
-			Scanner sc = new Scanner(System.in);
-			int choice = sc.nextInt();
-			character.learnSkill(skillList[choice - 1]);
-			break;
+	public Skill learnSkills(int no){
+		Skill [] skillList = Skill.values();
+		character.learnSkill(skillList[no-1]);
+		return skillList[no-1];
+	}
+	
+	public void deleteSkill(int no){
+		if(no == 0){
+			return;
+		}else{
+			System.out.println(character.skillList.get(no-1).getName()+"기술이 삭제 되었습니다");
+			character.skillList.remove(no-1);
 		}
-
-		case DELETE_SKILL: {
-
-			break;
-		}
-		}
-	}// learnSkill문 종료
-
+	}
+	
 	public void normalAttack(Enemy enemy) {
 		int enemyHp = enemy.getDamaged(character.getAttack());
 		int characterHp = character.getDamaged(enemy.getAttack());

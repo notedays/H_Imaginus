@@ -88,16 +88,15 @@ public enum Character {
 	}
 
 	public void learnSkill(Skill skill) {
-		System.out.println();
 		if (level >= skill.getLevelLimit() && level >= 0) {
 			if (skillList.contains(skill)) {
-				System.out.println("이미 배운 스킬입니다.");
+				System.out.print("이미 배운 스킬입니다.");
 			} else {
 				skillList.add(skill);
-				System.out.println(skill.getName() + "을 배웠습니다.");
+				System.out.print(skill.getName() + "을 배웠습니다.");
 			}
 		} else {
-			System.out.println("요구 레벨이 부족합니다.");
+			System.out.print("요구 레벨이 부족합니다.");
 		}
 	}
 
