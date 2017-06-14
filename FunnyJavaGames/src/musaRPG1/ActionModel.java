@@ -22,11 +22,16 @@ public class ActionModel {
 	public static final int EVATION_ATTACK = 4;
 
 	// # 자원관리(성 관리)
-	public static final int GATHER = 1;	// 병사 모집
+	public static final int GATHER = 1; // 병사 모집
 	public static final int ENFORCEMENT = 2; // 성벽 유지보수 및 강화
 	public static final int DEPLOYMENT = 3; // 성내 병력 배치
 	public static final int CASTLE_ATTACK = 4; // 성 공격
-	
+	public static final int SHOW_COMPANY = 5; // 병사 현황
+
+	// # 성 공격
+	public static final int ARCHOR_ATTACK = 1;
+	public static final int SOLDIER_ATTACK = 2;
+	public static final int SIEGER_ATTACK = 3;
 
 	// # 스킬 코드(SKILL_LEARN)
 	public static final int LEARN_SKILL = 1;
@@ -52,40 +57,51 @@ public class ActionModel {
 		character.skillList.add(Skill.KNIFE_THROW); // 기초 스킬 설정
 	}
 
-	public void generateCastleCompanion(Castles castle){
-		for(int i = 1; i <= Companion.names.length ; i++){
-			castle.cattleCompanionList.add(new Companion(i, castle.getLevel()));
+	public void generateCastleCompanion(Castles castle) {
+		for (int i = 1; i <= Companion.names.length; i++) {
+			castle.cattleCompanionList.add(new Companion(i, castle.getLevel(), 10));
 		}
 	}
-	
-	public void castleAttack(Castles castle, int battleChoice){
-		//궁수 공격
-		System.out.println(castle.cattleCompanionList.get(0).getHp());
-		castle.cattleCompanionList.get(0).setHp(character.companion.get(0).getAttack());
-		System.out.println(castle.cattleCompanionList.get(0).getHp());
-		//보병 공격
-		//공성추 공격
+
+	public void archorCastleAttack(Castles castle) {
+		castle.damageCastle(character.totalArchorDamage);
 	}
-	
+
+	public void soldierCastleAttack(Castles castle) {
+		castle.damageCastle(character.totalSoldierDamage); // 적성 체력 감소
+		
+		List<Companion> soldierList = character.companionSoldier;
+		
+		int i = 0;
+		int soldierHp = soldierList.get(i).damageHp(castle.getAttack());
+		if(soldierHp <= 0){
+			i += 1;
+		}
+	}
+
+	public void siegerCastleAttack(Castles castle) {
+		castle.damageCastle(character.totalSiegerDamage);
+	}
+
 	public Enemy generateEnemy() {
 		return new Enemy(character.getLevel());
 	}
-	
-	public Skill learnSkills(int no){
-		Skill [] skillList = Skill.values();
-		character.learnSkill(skillList[no-1]);
-		return skillList[no-1];
+
+	public Skill learnSkills(int no) {
+		Skill[] skillList = Skill.values();
+		character.learnSkill(skillList[no - 1]);
+		return skillList[no - 1];
 	}
-	
-	public void deleteSkill(int no){
-		if(no == 0){
+
+	public void deleteSkill(int no) {
+		if (no == 0) {
 			return;
-		}else{
-			System.out.println(character.skillList.get(no-1).getName()+"기술이 삭제 되었습니다");
-			character.skillList.remove(no-1);
+		} else {
+			System.out.println(character.skillList.get(no - 1).getName() + "기술이 삭제 되었습니다");
+			character.skillList.remove(no - 1);
 		}
 	}
-	
+
 	public void normalAttack(Enemy enemy) {
 		int enemyHp = enemy.getDamaged(character.getAttack());
 		int characterHp = character.getDamaged(enemy.getAttack());
@@ -129,7 +145,7 @@ public class ActionModel {
 
 	}// useSkill문 종료
 
-	public boolean evation(Enemy enemy){
+	public boolean evation(Enemy enemy) {
 		if (Math.random() < 0.3f) {
 			System.out.println("회피 성공!!");
 			return true;
@@ -140,7 +156,8 @@ public class ActionModel {
 			if (character.getHp() == 0) {
 				character.die();
 			}
-		}return false;
+		}
+		return false;
 	}
 
 	public boolean run(Enemy enemy) {
@@ -153,14 +170,36 @@ public class ActionModel {
 		}
 	}
 
-	public Companion gather(int code, Character character) {
-		return new Companion(code, character.getLevel());
+	public Companion gather(int code, int number) {
+		if (number * Companion.demandMoneys[code - 1] <= character.getMoney()) {
+			return new Companion(code, character.getLevel(), number);
+		} else {
+			System.out.println("소지금이 부족합니다.");
+			return null;
+		}
 	}
 
-	public void gatherPut(Companion companion) {
-		character.companion.add(companion);
+	public void gatherPutMyCompanion(Companion companion) {
+		if (companion.getCode() == Companion.궁사 && companion != null) {
+			character.companionArchor.add(companion);
+			character.useMoney(companion.getDemandMoney() * companion.getNumberOfUnit());
+			character.totalArchorDamage += companion.getAttack() * companion.getNumberOfUnit();
+
+			System.out.println(companion.getName() + " " + companion.getNumberOfUnit() + "명이 추가되었습니다");
+
+		} else if (companion.getCode() == Companion.보병 && companion != null) {
+			character.companionSoldier.add(companion);
+			character.useMoney(companion.getDemandMoney() * companion.getNumberOfUnit());
+			System.out.println(companion.getName() + " " + companion.getNumberOfUnit() + "명이 추가되었습니다");
+
+		} else if (companion.getCode() == Companion.공성차 && companion != null) {
+			character.companionSieger.add(companion);
+			character.useMoney(companion.getDemandMoney() * companion.getNumberOfUnit());
+			System.out.println(companion.getName() + " " + companion.getNumberOfUnit() + "명이 추가되었습니다");
+
+		} else if (companion == null) {
+			return;
+		}
 	}
 
-	
-	
 }// actionModel문 종료

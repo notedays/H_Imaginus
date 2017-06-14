@@ -31,9 +31,9 @@ public class MusaRpg {
 
 		// # 시작성 부여(임시)
 		character.castles.add(Castles.MASAN_SUNG);
-
-		// # 시작 동료 부여(임시)
-		character.companion.add(new Companion(1, character.getLevel()));
+		
+		character.companionArchor.add(new Companion(1, 1, 20));
+		character.companionSoldier.add(new Companion(2, 1, 30));
 
 		String[] musics = { "muhyul_bgm.mp3", "iljimae_bgm.mp3" };
 		// # 배경 음악 재생
@@ -102,16 +102,17 @@ public class MusaRpg {
 				int deleteSkill = view.deleteSkill(character);
 				action.deleteSkill(deleteSkill);
 				break;
-			}break;
+			}
+			break;
 
 		case ActionModel.MANAGE_RESOURCE:
 			int manageNo = view.selectManage();
 
 			switch (manageNo) {
 			case ActionModel.GATHER:
-				int gatherNo = view.selectCompanion();
-				action.gatherPut(action.gather(gatherNo, character));
-				System.out.println();
+				int selectNumber = view.selectCompanion(); // 병사 추가 메뉴
+				int gatherNumber = view.numberCompanion(character, selectNumber);
+				action.gatherPutMyCompanion(action.gather(selectNumber, gatherNumber));
 				break;
 
 			case ActionModel.ENFORCEMENT:
@@ -128,10 +129,28 @@ public class MusaRpg {
 				Castles castle = castleChoice[choice - 1];
 				action.generateCastleCompanion(castle);
 
+				while(castle.getCastleHp() != 0){
 				int battleChoice = view.selectCastleBattle();
-				action.castleAttack(castle, battleChoice);
+					switch (battleChoice) {
+					case ActionModel.ARCHOR_ATTACK:
+						action.archorCastleAttack(castle);
+						System.out.println(castle.getName()+"의 남은 Hp "+castle.getCastleHp());
+						break;
+						
+					case ActionModel.SOLDIER_ATTACK:
+						action.soldierCastleAttack(castle);
+						System.out.println(castle.getName()+"의 남은 Hp "+castle.getCastleHp());
+						break;
+						
+					case ActionModel.SIEGER_ATTACK:
+						action.siegerCastleAttack(castle);
+						break;
+					}
+				}break;
+			}
 
-				break;
+			case ActionModel.SHOW_COMPANY: {
+				view.showCompany(character);
 			}
 			}
 		}

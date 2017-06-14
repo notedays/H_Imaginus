@@ -10,28 +10,59 @@ public class Companion {
 	private int maxHp;
 	private String explanation;
 	private int numberOfUnit;
-	
+	private int demandMoney;
+	private int grade;
 	int[] codes = {1, 2, 3};
-	static String[] names = {"궁사", "보병", "기병"};
-	String [] explanations = {"대 지상 상대로 강한 궁사", "대 궁사 상대로 강한 보병", "대 보병 상대로 강한 기병"};
 	
-	public Companion(int code, int level) {
+	static public final int 궁사 = 1;
+	static public final int 보병 = 2;
+	static public final int 공성차 = 3;
+	
+	static String[] names = {"궁사", "보병","공성차"};
+	String [] explanations = {"대 지상 상대로 강한 궁사", "대 궁사 상대로 강한 보병", "공성에 능한 전차"};
+	static int [] demandMoneys = { 500, 300, 1000 };
+	
+	public Companion(int code, int level, int number) {
 		this.code = code;
 		this.name = names[code-1];
-		this.attack = +1;
-		this.defense = code+1;
-		this.hp = code*5;
-		this.maxHp = code*50;
+		this.attack = level*2+5;
+		this.defense = level*2+5;
+		this.hp = level*2+50;
+		this.maxHp = level*2+50;
 		this.explanation = explanations[code-1];
-		this.numberOfUnit = level;
+		this.numberOfUnit = number;
+		this.demandMoney = demandMoneys[code-1];
+		this.grade = level;
 	}
-	
+	// 추가 메소드
+	public int damageHp(int damage){
+		if(hp >= damage){
+			hp -= damage;
+		}
+		return hp;
+	}
 	
 	////getter, setter
 	
 	
 	public int getCode() {
 		return code;
+	}
+
+	public int getDemandMoney() {
+		return demandMoney;
+	}
+
+	public void setDemandMoney(int demandMoney) {
+		this.demandMoney = demandMoney;
+	}
+
+	public int getNumberOfUnit() {
+		return numberOfUnit;
+	}
+
+	public void setNumberOfUnit(int numberOfUnit) {
+		this.numberOfUnit = numberOfUnit;
 	}
 
 	public void setCode(int code) {
@@ -84,14 +115,6 @@ public class Companion {
 
 	public void setExplanation(String explanation) {
 		this.explanation = explanation;
-	}
-
-	public int getNumberOfUnit() {
-		return numberOfUnit;
-	}
-
-	public void setNumberOfUnit(int numberOfUnit) {
-		this.numberOfUnit = numberOfUnit;
 	}
 
 	public int[] getCodes() {

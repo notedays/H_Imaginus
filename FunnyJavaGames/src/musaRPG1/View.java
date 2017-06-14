@@ -98,7 +98,7 @@ public class View {
 	}
 
 	public int selectManage() {
-		String[] namageLists = { "병사 충원", "성벽 보수", "병사 배치", "성 공격", "돌아가기" };
+		String[] namageLists = { "병사 충원", "성벽 보수", "병사 배치", "성 공격", "병참 현황", "돌아가기" };
 		for (int i = 1; i <= namageLists.length; i++) {
 			System.out.println(i + ". " + namageLists[i - 1]);
 		}
@@ -111,6 +111,16 @@ public class View {
 			System.out.println(i + ". " + companionLists[i - 1]);
 		}
 		return inputNo(companionLists.length);
+	}
+
+	public int numberCompanion(Character character, int num) {
+		String[] nameList = Companion.names;
+		int[] demandMoney = Companion.demandMoneys;
+		System.out.println("현재 소지금 : " + character.getMoney());
+		System.out.println(nameList[num-1]+"의 생산비용은 "+demandMoney[num-1]+"원 입니다");
+		System.out.print("몇 명 충원 하시겠습니까?");
+		int numberCompanion = sc.nextInt();
+		return numberCompanion;
 	}
 
 	public int selectCastle() {
@@ -127,5 +137,31 @@ public class View {
 			System.out.println(i + ". " + castleBattle[i - 1]);
 		}
 		return inputNo(castleBattle.length);
+	}
+
+	public void showCompany(Character character){
+		List<Companion> archor = character.companionArchor;
+		List<Companion> soldier = character.companionSoldier;
+		List<Companion> seiger = character.companionSieger;
+	
+		int archorSum = 0; 
+		for(int i = 0; i < archor.size(); i++){
+			archorSum += archor.get(i).getNumberOfUnit();
+		}
+		
+		int soldierSum = 0; 
+		for(int i = 0; i < soldier.size(); i++){
+			soldierSum+= soldier.get(i).getNumberOfUnit();
+		}
+		
+		int seigerSum = 0; 
+		for(int i = 0; i < seiger.size(); i++){
+		 seigerSum += seiger.get(i).getNumberOfUnit();
+		}
+		
+		System.out.println(Companion.names[0]+"의 숫자는 "+archorSum+"명 입니다");
+		System.out.println(Companion.names[1]+"의 숫자는 "+soldierSum+"명 입니다");
+		System.out.println(Companion.names[2]+"의 숫자는 "+seigerSum+"명 입니다");
+		System.out.println("보유한 군량미는 "+character.getFood()+"석 입니다");
 	}
 }
