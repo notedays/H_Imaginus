@@ -26,7 +26,8 @@ public class ActionModel {
 	public static final int ENFORCEMENT = 2; // 성벽 유지보수 및 강화
 	public static final int DEPLOYMENT = 3; // 성내 병력 배치
 	public static final int CASTLE_ATTACK = 4; // 성 공격
-	public static final int SHOW_COMPANY = 5; // 병사 현황
+	public static final int SHOW_MY_COMPANY = 5; // 병사 현황
+	public static final int SHOW_MY_CASTLE = 6; // 보유 성 현황
 
 	// # 성 공격
 	public static final int ARCHOR_ATTACK = 1;
@@ -149,41 +150,38 @@ public class ActionModel {
 		if (sortCompany == Companion.ARCHOR) {
 			// 내가 가진 돈이 궁사 총생산 비용보다 크다면
 			int archorDemandMoney = numberCompany * Companion.demandMoneys[Companion.ARCHOR - 1];
-			if (character.getMoney() >= archorDemandMoney
-					&& character.getMoney() >= 0) {
-				
-				character.companionList.get(sortCompany-1).addAmount(numberCompany);
-				character.setMoney(character.getMoney()-archorDemandMoney);
+			if (character.getMoney() >= archorDemandMoney && character.getMoney() >= 0) {
+
+				character.companionList.get(sortCompany - 1).addAmount(numberCompany);
+				character.setMoney(character.getMoney() - archorDemandMoney);
 				return true;
 			} else {
 				System.out.println("금전이 부족합니다");
 				return false;
 			}
-			
+
 			// 보병 충원
 		} else if (sortCompany == Companion.SOLDIER) {
 			int soldierDemandMoney = numberCompany * Companion.demandMoneys[Companion.SOLDIER - 1];
-			if (character.getMoney() >= soldierDemandMoney
-					&& character.getMoney() >= 0) {
-				
-				character.companionList.get(sortCompany-1).addAmount(numberCompany);
-				character.setMoney(character.getMoney()-soldierDemandMoney);
+			if (character.getMoney() >= soldierDemandMoney && character.getMoney() >= 0) {
+
+				character.companionList.get(sortCompany - 1).addAmount(numberCompany);
+				character.setMoney(character.getMoney() - soldierDemandMoney);
 				return true;
 			} else {
 				System.out.println("비용이 부족합니다");
 				return false;
 			}
-			
+
 			// 공성추 충원
 		} else if (sortCompany == Companion.SIEGER) {
 			int seigerDemandMoney = numberCompany * Companion.demandMoneys[Companion.SIEGER - 1];
-			if (character.getMoney() >= seigerDemandMoney
-					&& character.getMoney() >= 0) {
+			if (character.getMoney() >= seigerDemandMoney && character.getMoney() >= 0) {
 				Companion seiger = new Companion(sortCompany, character.getLevel());
 				seiger.addAmount(numberCompany);
-				
-				character.companionList.get(sortCompany-1).addAmount(numberCompany);
-				character.setMoney(character.getMoney()-seigerDemandMoney);
+
+				character.companionList.get(sortCompany - 1).addAmount(numberCompany);
+				character.setMoney(character.getMoney() - seigerDemandMoney);
 				return true;
 			} else {
 				System.out.println("비용이 부족합니다");
@@ -192,10 +190,42 @@ public class ActionModel {
 		}
 		return false;
 	}
-	
-	public void castleAttack(){
-		
-		
+
+	public void castleAttack(Castles castle, int attackChoice) {
+
+		Companion archorList = character.companionList.get(Companion.ARCHOR - 1);
+		Companion soldierList = character.companionList.get(Companion.SOLDIER - 1);
+		Companion siegerList = character.companionList.get(Companion.SIEGER - 1);
+
+		if (archorList.getAmount() == 0 && soldierList.getAmount() == 0 && siegerList.getAmount() == 0) {
+			System.out.println("병력을 생산하십시오");
+
+		} else if (archorList.getAmount() != 0 && attackChoice == Companion.ARCHOR) { // 원거리
+			int archorTotalAttack = character.companionList.get(Companion.ARCHOR - 1).getAttack();
+			// 성 공격중 성 hp가 0이 될경우 해당성 획득
+			if (castle.getDamaged(archorTotalAttack) == true)
+				character.obtainCastle(castle);
+
+		} else if (soldierList.getAmount() != 0 && attackChoice == Companion.SOLDIER) { // 근거리
+			int soldierTotalAttack = character.companionList.get(Companion.SOLDIER - 1).getAttack();
+			castle.getDamaged(soldierTotalAttack);
+
+			// 성 공격중 성 hp가 0이 될경우 해당성 획득
+			if (castle.getDamaged(soldierTotalAttack) == true)
+				character.obtainCastle(castle);
+
+			// 적 공격시 공격하는 성 공격력 만큼 보병 피해입음
+			soldierList.getDamage(castle.getAttack());
+
+		} else if (siegerList.getAmount() != 0 && attackChoice == Companion.SIEGER) { // 원거리
+			int seigerTotalAttack = character.companionList.get(Companion.SIEGER - 1).getAttack();
+
+			// 성 공격중 성 hp가 0이 될경우 해당성 획득
+			if (castle.getDamaged(seigerTotalAttack + character.getLevel() * 2) == true)
+				character.obtainCastle(castle);
+		}else{
+			System.out.println("병력을 생산하세요");
+		}
 	}
 
 }// actionModel문 종료

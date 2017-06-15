@@ -98,7 +98,7 @@ public class View {
 	}
 
 	public int selectManage() {
-		String[] namageLists = { "병사 충원", "성벽 보수", "병사 배치", "성 공격", "병참 현황", "돌아가기" };
+		String[] namageLists = { "병사 충원", "성벽 보수", "병사 배치", "성 공격", "병참 현황", "성 보유 현황", "돌아가기"};
 		for (int i = 1; i <= namageLists.length; i++) {
 			System.out.println(i + ". " + namageLists[i - 1]);
 		}
@@ -154,4 +154,15 @@ public class View {
 			System.out.println();
 		}
 	}
+	
+	public void showMyCastle(Character character){
+		System.out.println("===보유성 현황===");
+		for(int i=1; i <= character.castles.size(); i++){
+			System.out.println(i+". "+character.castles.get(i-1).getName());
+		}
+	}
+	
+	
+	
+	
 }

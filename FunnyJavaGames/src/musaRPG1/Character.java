@@ -8,7 +8,8 @@ public enum Character {
 			new ArrayList<Castles>(), new ArrayList<Companion>()),
 	
 	ILJIMAE(2, "일지매", "초급 의병장", 1, 5, 0, 1, 1000, 100, 10, 10, 10000, 100,
-			new Inventory<Item>(), new ArrayList<Skill>(), new ArrayList<Castles>(), new ArrayList<Companion>());
+			new Inventory<Item>(), new ArrayList<Skill>(),
+			new ArrayList<Castles>(), new ArrayList<Companion>());
 
 	private final int code;
 	private final String name;
@@ -47,11 +48,17 @@ public enum Character {
 		this.food = food;
 		this.inventory = inventory;
 		this.skillList = skillList;
-		this.castles = castles;
+		this.castles = castles;		//보유한 성 리스트 
 		this.companionList = companionList;
 	}
 
 	// # 추가 메소드
+	
+	public void obtainCastle(Castles castle){
+		castles.add(castle);
+		System.out.println(castle.getName()+"을 획득했습니다");
+	}
+	
 	public void obtainItem(Item item) {
 		System.out.println(item + "획득");
 		inventory.addItem(item);

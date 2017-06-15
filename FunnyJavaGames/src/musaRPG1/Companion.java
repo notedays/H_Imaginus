@@ -49,6 +49,9 @@ public class Companion {
 		}
 	}
 	
+	public int getAmount(){
+		return volume;
+	}
 	
 	
 	

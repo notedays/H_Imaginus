@@ -31,14 +31,10 @@ public class MusaRpg {
 		character = view.selectCharacter();
 		action.initialize(character);
 
-		// # 시작성 부여(임시)
-		character.castles.add(Castles.MASAN_SUNG);
-		
 		// # 시작 동료 유닛 빈 값 형성
 		Companion archor = new Companion(Companion.ARCHOR, character.getLevel());
 		Companion soldier = new Companion(Companion.SOLDIER, character.getLevel());
 		Companion seiger = new Companion(Companion.SIEGER, character.getLevel());
-	
 		character.companionList.add(archor);
 		character.companionList.add(soldier);
 		character.companionList.add(seiger);
@@ -62,6 +58,8 @@ public class MusaRpg {
 		System.out.println("게임을 종료합니다.");
 		System.exit(1);
 	}
+	
+	
 
 	private void action(int actionNo) {
 		switch (actionNo) {
@@ -135,7 +133,6 @@ public class MusaRpg {
 
 	public void manageResource(int manageNo) {
 		switch (manageNo) {
-
 		case ActionModel.GATHER:
 			int companionChoice = view.gatherCompanion(character);
 			int numberCompanion = view.numberCompanion(companionChoice);
@@ -156,12 +153,23 @@ public class MusaRpg {
 			int choice = view.selectCastle();
 			Castles[] castleChoice = Castles.values();
 			Castles castle = castleChoice[choice - 1];
+
+			if (character.castles.contains(castle)) {
+				System.out.println("이미 보유한 성입니다");
+			} else {
+				int attackChoice = view.selectCastleBattle();
+				action.castleAttack(castle, attackChoice);
+			}
+			break;
 		}
-
-		case ActionModel.SHOW_COMPANY: {
+		case ActionModel.SHOW_MY_COMPANY: {
 			view.showMyCompanion(character);
-
+			break;
+		}
+		case ActionModel.SHOW_MY_CASTLE: {
+			view.showMyCastle(character);
 		}
 		}
 	}
+
 }
