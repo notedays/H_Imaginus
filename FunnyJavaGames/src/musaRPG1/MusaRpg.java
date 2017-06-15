@@ -1,6 +1,8 @@
 package musaRPG1;
 
 import java.io.File;
+import java.nio.channels.GatheringByteChannel;
+import java.nio.channels.ShutdownChannelGroupException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -32,8 +34,14 @@ public class MusaRpg {
 		// # 시작성 부여(임시)
 		character.castles.add(Castles.MASAN_SUNG);
 		
-		character.companionArchor.add(new Companion(1, 1, 20));
-		character.companionSoldier.add(new Companion(2, 1, 30));
+		// # 시작 동료 유닛 빈 값 형성
+		Companion archor = new Companion(Companion.ARCHOR, character.getLevel());
+		Companion soldier = new Companion(Companion.SOLDIER, character.getLevel());
+		Companion seiger = new Companion(Companion.SIEGER, character.getLevel());
+	
+		character.companionList.add(archor);
+		character.companionList.add(soldier);
+		character.companionList.add(seiger);
 
 		String[] musics = { "muhyul_bgm.mp3", "iljimae_bgm.mp3" };
 		// # 배경 음악 재생
@@ -57,32 +65,15 @@ public class MusaRpg {
 
 	private void action(int actionNo) {
 		switch (actionNo) {
-		case ActionModel.BATTLE: // # 전투하기
+
+		case ActionModel.BATTLE:
 			Enemy enemy = action.generateEnemy();
-			while (enemy.getHp() != 0) {
+			do {
 				int battleNo = view.selectBattle(character, enemy);
-				switch (battleNo) {
-				case ActionModel.NORMAL_ATTACK:
-					action.normalAttack(enemy);
-					break;
-				case ActionModel.SKILL_ATTACK:
-					int skillNo = view.selectSkill(character, enemy);
-					action.useSkill(skillNo, enemy);
-					break;
+				battleAction(battleNo, enemy);
+			} while (enemy.getHp() != 0);
 
-				case ActionModel.RUN_ATTACK:
-					if (action.run(enemy) == true)
-						return;
-					break;
-
-				case ActionModel.EVATION_ATTACK:
-					if (action.evation(enemy) == true)
-						return;
-					break;
-				}
-			} // attack문 종료
 			break;
-
 		case ActionModel.SHOW_INFO:
 
 			break;
@@ -92,67 +83,85 @@ public class MusaRpg {
 
 		case ActionModel.SKILL_LEARN:
 			int choiceSkill = view.selectSkill();
-			switch (choiceSkill) {
-			case ActionModel.LEARN_SKILL:
-				int learnSkill = view.learnSkill();
-				action.learnSkills(learnSkill);
-				break;
-
-			case ActionModel.DELETE_SKILL:
-				int deleteSkill = view.deleteSkill(character);
-				action.deleteSkill(deleteSkill);
-				break;
-			}
+			learnSkill(choiceSkill);
 			break;
 
 		case ActionModel.MANAGE_RESOURCE:
 			int manageNo = view.selectManage();
+			manageResource(manageNo);
+		}
+	}
 
-			switch (manageNo) {
-			case ActionModel.GATHER:
-				int selectNumber = view.selectCompanion(); // 병사 추가 메뉴
-				int gatherNumber = view.numberCompanion(character, selectNumber);
-				action.gatherPutMyCompanion(action.gather(selectNumber, gatherNumber));
-				break;
+	// 컨트롤러 메소드
 
-			case ActionModel.ENFORCEMENT:
+	private void learnSkill(int choiceSkill) {
+		switch (choiceSkill) {
+		case ActionModel.LEARN_SKILL:
+			int learnSkill = view.learnSkill();
+			action.learnSkills(learnSkill);
+			break;
 
-				break;
+		case ActionModel.DELETE_SKILL:
+			int deleteSkill = view.deleteSkill(character);
+			action.deleteSkill(deleteSkill);
+			break;
+		}
+	}
 
-			case ActionModel.DEPLOYMENT:
+	private void battleAction(int battleNo, Enemy enemy) {
 
-				break;
+		switch (battleNo) {
+		case ActionModel.NORMAL_ATTACK:
+			action.normalAttack(enemy);
+			break;
+		case ActionModel.SKILL_ATTACK:
+			int skillNo = view.selectSkill(character, enemy);
+			action.useSkill(skillNo, enemy);
+			break;
 
-			case ActionModel.CASTLE_ATTACK: {
-				int choice = view.selectCastle();
-				Castles[] castleChoice = Castles.values();
-				Castles castle = castleChoice[choice - 1];
-				action.generateCastleCompanion(castle);
-
-				while(castle.getCastleHp() != 0){
-				int battleChoice = view.selectCastleBattle();
-					switch (battleChoice) {
-					case ActionModel.ARCHOR_ATTACK:
-						action.archorCastleAttack(castle);
-						System.out.println(castle.getName()+"의 남은 Hp "+castle.getCastleHp());
-						break;
-						
-					case ActionModel.SOLDIER_ATTACK:
-						action.soldierCastleAttack(castle);
-						System.out.println(castle.getName()+"의 남은 Hp "+castle.getCastleHp());
-						break;
-						
-					case ActionModel.SIEGER_ATTACK:
-						action.siegerCastleAttack(castle);
-						break;
-					}
-				}break;
+		case ActionModel.RUN_ATTACK:
+			if (action.run(enemy) == true) {
+				enemy.setHp(0);
 			}
+			break;
 
-			case ActionModel.SHOW_COMPANY: {
-				view.showCompany(character);
+		case ActionModel.EVATION_ATTACK:
+			if (action.evation(enemy) == true) {
+				enemy.setHp(0);
 			}
+			break;
+		}
+	}
+
+	public void manageResource(int manageNo) {
+		switch (manageNo) {
+
+		case ActionModel.GATHER:
+			int companionChoice = view.gatherCompanion(character);
+			int numberCompanion = view.numberCompanion(companionChoice);
+			if (action.gatherCompanion(companionChoice, numberCompanion) == true) {
+				System.out.println("병사 모집 성공");
+			} else {
+				System.out.println("병사 모집 실패");
 			}
+			break;
+
+		case ActionModel.ENFORCEMENT:
+			break;
+
+		case ActionModel.DEPLOYMENT:
+
+			break;
+		case ActionModel.CASTLE_ATTACK: {
+			int choice = view.selectCastle();
+			Castles[] castleChoice = Castles.values();
+			Castles castle = castleChoice[choice - 1];
+		}
+
+		case ActionModel.SHOW_COMPANY: {
+			view.showMyCompanion(character);
+
+		}
 		}
 	}
 }

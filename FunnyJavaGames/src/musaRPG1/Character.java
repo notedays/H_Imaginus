@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum Character {
-	MUHYUL(1, "무휼", "초급 의병장", 1, 5, 0, 1, 1000, 100, 10, 10, 1000, 100, 10, 10, 10, new Inventory<Item>(), new ArrayList<Skill>(),
-			new ArrayList<Castles>(), new ArrayList<Companion>(), new ArrayList<Companion>(),
-			new ArrayList<Companion>()),
+	MUHYUL(1, "무휼", "초급 의병장", 1, 5, 0, 1, 1000, 100, 10, 10, 10000, 100, new Inventory<Item>(), new ArrayList<Skill>(),
+			new ArrayList<Castles>(), new ArrayList<Companion>()),
 	
-	ILJIMAE(2, "일지매", "초급 의병장", 1, 5, 0, 1, 1000, 100, 10, 10, 1000, 100, 10, 10, 10,
-			new Inventory<Item>(), new ArrayList<Skill>(), new ArrayList<Castles>(), new ArrayList<Companion>(),
-			new ArrayList<Companion>(), new ArrayList<Companion>());
+	ILJIMAE(2, "일지매", "초급 의병장", 1, 5, 0, 1, 1000, 100, 10, 10, 10000, 100,
+			new Inventory<Item>(), new ArrayList<Skill>(), new ArrayList<Castles>(), new ArrayList<Companion>());
 
 	private final int code;
 	private final String name;
@@ -25,23 +23,15 @@ public enum Character {
 	private int maxMp;
 	private int money;
 	private int food;
-	public int totalArchorDamage;
-	public int totalSoldierDamage;
-	public int totalSiegerDamage;
-	
 
 	private final Inventory<Item> inventory;
 	public List<Skill> skillList;
 	public List<Castles> castles;
-	public List<Companion> companionArchor;
-	public List<Companion> companionSoldier;
-	public List<Companion> companionSieger;
+	public List<Companion> companionList;
 	
 	private Character(int code, String name, String grade, int level, int attack, int exp, int maxExp, int hp,
-			int maxHp, int mp, int maxMp, int money, int food, int totalArchorDamage, int totalSoldierDamage,
-			int totalSiegerDamage, Inventory<Item> inventory, List<Skill> skillList,
-			List<Castles> castles, List<Companion> companionArchor, List<Companion> companionSoldier,
-			List<Companion> companionSieger) {
+			int maxHp, int mp, int maxMp, int money, int food, Inventory<Item> inventory, List<Skill> skillList,
+			List<Castles> castles, List<Companion> companionList) {
 		this.code = code;
 		this.name = name;
 		this.grade = grade;
@@ -58,12 +48,7 @@ public enum Character {
 		this.inventory = inventory;
 		this.skillList = skillList;
 		this.castles = castles;
-		this.companionArchor = companionArchor;
-		this.companionSoldier = companionSoldier;
-		this.companionSieger = companionSieger;
-		this.totalArchorDamage = totalArchorDamage;
-		this.totalSoldierDamage = totalSoldierDamage;
-		this.totalSiegerDamage = totalSiegerDamage;
+		this.companionList = companionList;
 	}
 
 	// # 추가 메소드
@@ -133,37 +118,13 @@ public enum Character {
 			System.out.println(useMoney + " 원을 사용했습니다");
 		}
 	}
+	
+	
 
 	// # GETTER / SETTER =================
 	
-	
-	
 	public int getCode() {
 		return code;
-	}
-
-	public int getTotalArchorDamage() {
-		return totalArchorDamage;
-	}
-
-	public void setTotalArchorDamage(int totalArchorDamage) {
-		this.totalArchorDamage = totalArchorDamage;
-	}
-
-	public int getTotalSoldierDamage() {
-		return totalSoldierDamage;
-	}
-
-	public void setTotalSoldierDamage(int totalSoldierDamage) {
-		this.totalSoldierDamage = totalSoldierDamage;
-	}
-
-	public int getTotalSiegerDamage() {
-		return totalSiegerDamage;
-	}
-
-	public void setTotalSiegerDamage(int totalSiegerDamage) {
-		this.totalSiegerDamage = totalSiegerDamage;
 	}
 
 	public int getFood() {

@@ -57,32 +57,6 @@ public class ActionModel {
 		character.skillList.add(Skill.KNIFE_THROW); // 기초 스킬 설정
 	}
 
-	public void generateCastleCompanion(Castles castle) {
-		for (int i = 1; i <= Companion.names.length; i++) {
-			castle.cattleCompanionList.add(new Companion(i, castle.getLevel(), 10));
-		}
-	}
-
-	public void archorCastleAttack(Castles castle) {
-		castle.damageCastle(character.totalArchorDamage);
-	}
-
-	public void soldierCastleAttack(Castles castle) {
-		castle.damageCastle(character.totalSoldierDamage); // 적성 체력 감소
-		
-		List<Companion> soldierList = character.companionSoldier;
-		
-		int i = 0;
-		int soldierHp = soldierList.get(i).damageHp(castle.getAttack());
-		if(soldierHp <= 0){
-			i += 1;
-		}
-	}
-
-	public void siegerCastleAttack(Castles castle) {
-		castle.damageCastle(character.totalSiegerDamage);
-	}
-
 	public Enemy generateEnemy() {
 		return new Enemy(character.getLevel());
 	}
@@ -170,36 +144,58 @@ public class ActionModel {
 		}
 	}
 
-	public Companion gather(int code, int number) {
-		if (number * Companion.demandMoneys[code - 1] <= character.getMoney()) {
-			return new Companion(code, character.getLevel(), number);
-		} else {
-			System.out.println("소지금이 부족합니다.");
-			return null;
+	public boolean gatherCompanion(int sortCompany, int numberCompany) {
+		// 궁사 충원
+		if (sortCompany == Companion.ARCHOR) {
+			// 내가 가진 돈이 궁사 총생산 비용보다 크다면
+			int archorDemandMoney = numberCompany * Companion.demandMoneys[Companion.ARCHOR - 1];
+			if (character.getMoney() >= archorDemandMoney
+					&& character.getMoney() >= 0) {
+				
+				character.companionList.get(sortCompany-1).addAmount(numberCompany);
+				character.setMoney(character.getMoney()-archorDemandMoney);
+				return true;
+			} else {
+				System.out.println("금전이 부족합니다");
+				return false;
+			}
+			
+			// 보병 충원
+		} else if (sortCompany == Companion.SOLDIER) {
+			int soldierDemandMoney = numberCompany * Companion.demandMoneys[Companion.SOLDIER - 1];
+			if (character.getMoney() >= soldierDemandMoney
+					&& character.getMoney() >= 0) {
+				
+				character.companionList.get(sortCompany-1).addAmount(numberCompany);
+				character.setMoney(character.getMoney()-soldierDemandMoney);
+				return true;
+			} else {
+				System.out.println("비용이 부족합니다");
+				return false;
+			}
+			
+			// 공성추 충원
+		} else if (sortCompany == Companion.SIEGER) {
+			int seigerDemandMoney = numberCompany * Companion.demandMoneys[Companion.SIEGER - 1];
+			if (character.getMoney() >= seigerDemandMoney
+					&& character.getMoney() >= 0) {
+				Companion seiger = new Companion(sortCompany, character.getLevel());
+				seiger.addAmount(numberCompany);
+				
+				character.companionList.get(sortCompany-1).addAmount(numberCompany);
+				character.setMoney(character.getMoney()-seigerDemandMoney);
+				return true;
+			} else {
+				System.out.println("비용이 부족합니다");
+				return false;
+			}
 		}
+		return false;
 	}
-
-	public void gatherPutMyCompanion(Companion companion) {
-		if (companion.getCode() == Companion.궁사 && companion != null) {
-			character.companionArchor.add(companion);
-			character.useMoney(companion.getDemandMoney() * companion.getNumberOfUnit());
-			character.totalArchorDamage += companion.getAttack() * companion.getNumberOfUnit();
-
-			System.out.println(companion.getName() + " " + companion.getNumberOfUnit() + "명이 추가되었습니다");
-
-		} else if (companion.getCode() == Companion.보병 && companion != null) {
-			character.companionSoldier.add(companion);
-			character.useMoney(companion.getDemandMoney() * companion.getNumberOfUnit());
-			System.out.println(companion.getName() + " " + companion.getNumberOfUnit() + "명이 추가되었습니다");
-
-		} else if (companion.getCode() == Companion.공성차 && companion != null) {
-			character.companionSieger.add(companion);
-			character.useMoney(companion.getDemandMoney() * companion.getNumberOfUnit());
-			System.out.println(companion.getName() + " " + companion.getNumberOfUnit() + "명이 추가되었습니다");
-
-		} else if (companion == null) {
-			return;
-		}
+	
+	public void castleAttack(){
+		
+		
 	}
 
 }// actionModel문 종료

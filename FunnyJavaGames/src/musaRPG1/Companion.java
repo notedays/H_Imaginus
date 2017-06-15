@@ -1,72 +1,92 @@
 package musaRPG1;
 
 public class Companion {
-	
 	private int code;
-	private String name;
 	private int attack;
 	private int defense;
 	private int hp;
 	private int maxHp;
-	private String explanation;
-	private int numberOfUnit;
+	private int volume;
 	private int demandMoney;
-	private int grade;
-	int[] codes = {1, 2, 3};
-	
-	static public final int 궁사 = 1;
-	static public final int 보병 = 2;
-	static public final int 공성차 = 3;
-	
-	static String[] names = {"궁사", "보병","공성차"};
-	String [] explanations = {"대 지상 상대로 강한 궁사", "대 궁사 상대로 강한 보병", "공성에 능한 전차"};
-	static int [] demandMoneys = { 500, 300, 1000 };
-	
-	public Companion(int code, int level, int number) {
+
+	private String explanation;
+	private String name;
+
+	int[] codes = { 1, 2, 3 };
+
+	static public final int ARCHOR = 1;
+	static public final int SOLDIER = 2;
+	static public final int SIEGER = 3;
+
+	static String[] names = { "궁사", "보병", "공성차" };
+	String[] explanations = { "대 지상 상대로 강한 궁사", "대 궁사 상대로 강한 보병", "공성에 능한 전차" };
+	static int[] demandMoneys = { 500, 300, 1000 };
+
+	public Companion(int code, int level) {
 		this.code = code;
-		this.name = names[code-1];
-		this.attack = level*2+5;
-		this.defense = level*2+5;
-		this.hp = level*2+50;
-		this.maxHp = level*2+50;
-		this.explanation = explanations[code-1];
-		this.numberOfUnit = number;
-		this.demandMoney = demandMoneys[code-1];
-		this.grade = level;
+		this.attack = level * 5;
+		this.defense = level * 5;
+		this.hp = level * 5;
+		this.maxHp = level * 5;
+		this.volume = 0;
+		this.demandMoney = demandMoneys[code - 1];
+		this.explanation = explanations[code - 1];
+		this.name = names[code - 1];
 	}
+
+	
 	// 추가 메소드
-	public int damageHp(int damage){
-		if(hp >= damage){
-			hp -= damage;
+	public void addAmount(int volume) {
+		this.volume = this.volume + volume;
+	}
+
+	public void getDamage(int damage) {
+		if (this.volume - damage <= 0) {
+			this.volume = 0;
+			System.out.println(this.name+"병사가 전멸했습니다");
+		} else {
+			this.volume -= damage;
 		}
-		return hp;
 	}
 	
-	////getter, setter
 	
 	
+	
+	//// getter, setter
 	public int getCode() {
 		return code;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
+	}
+
+	public int getAttack() {
+		return attack * this.volume;
+	}
+
+	public int getDefense() {
+		return defense * this.volume;
+	}
+
+	public int getHp() {
+		return hp * this.volume;
+	}
+
+	public int getMaxHp() {
+		return maxHp * this.volume;
+	}
+
+	public int getVolume() {
+		return volume;
 	}
 
 	public int getDemandMoney() {
 		return demandMoney;
 	}
 
-	public void setDemandMoney(int demandMoney) {
-		this.demandMoney = demandMoney;
-	}
-
-	public int getNumberOfUnit() {
-		return numberOfUnit;
-	}
-
-	public void setNumberOfUnit(int numberOfUnit) {
-		this.numberOfUnit = numberOfUnit;
-	}
-
-	public void setCode(int code) {
-		this.code = code;
+	public String getExplanation() {
+		return explanation;
 	}
 
 	public String getName() {
@@ -76,70 +96,5 @@ public class Companion {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public int getAttack() {
-		return attack;
-	}
-
-	public void setAttack(int attack) {
-		this.attack = attack;
-	}
-
-	public int getDefense() {
-		return defense;
-	}
-
-	public void setDefense(int defense) {
-		this.defense = defense;
-	}
-
-	public int getHp() {
-		return hp;
-	}
-
-	public void setHp(int hp) {
-		this.hp = hp;
-	}
-
-	public int getMaxHp() {
-		return maxHp;
-	}
-
-	public void setMaxHp(int maxHp) {
-		this.maxHp = maxHp;
-	}
-
-	public String getExplanation() {
-		return explanation;
-	}
-
-	public void setExplanation(String explanation) {
-		this.explanation = explanation;
-	}
-
-	public int[] getCodes() {
-		return codes;
-	}
-
-	public void setCodes(int[] codes) {
-		this.codes = codes;
-	}
-
-	public String[] getNames() {
-		return names;
-	}
-
-	public void setNames(String[] names) {
-		this.names = names;
-	}
-
-	public String[] getExplanations() {
-		return explanations;
-	}
-
-	public void setExplanations(String[] explanations) {
-		this.explanations = explanations;
-	}
-
 
 }

@@ -32,7 +32,7 @@ public class View {
 
 	public int selectBattle(Character character, Enemy enemy) {
 		System.out.println("\n적 [" + enemy.getName() + "] 등장!!!");
-		String[] battleNames = { "일반 공격", "기술 사용", "피하기", "도망가기" };
+		String[] battleNames = { "일반 공격", "기술 사용", "도망가기", "피하기" };
 		for (int i = 1; i <= battleNames.length; i++) {
 			System.out.println(i + ". " + battleNames[i - 1]);
 		}
@@ -113,16 +113,6 @@ public class View {
 		return inputNo(companionLists.length);
 	}
 
-	public int numberCompanion(Character character, int num) {
-		String[] nameList = Companion.names;
-		int[] demandMoney = Companion.demandMoneys;
-		System.out.println("현재 소지금 : " + character.getMoney());
-		System.out.println(nameList[num-1]+"의 생산비용은 "+demandMoney[num-1]+"원 입니다");
-		System.out.print("몇 명 충원 하시겠습니까?");
-		int numberCompanion = sc.nextInt();
-		return numberCompanion;
-	}
-
 	public int selectCastle() {
 		Castles[] castles = Castles.values();
 		for (int i = 1; i <= castles.length; i++) {
@@ -139,29 +129,29 @@ public class View {
 		return inputNo(castleBattle.length);
 	}
 
-	public void showCompany(Character character){
-		List<Companion> archor = character.companionArchor;
-		List<Companion> soldier = character.companionSoldier;
-		List<Companion> seiger = character.companionSieger;
-	
-		int archorSum = 0; 
-		for(int i = 0; i < archor.size(); i++){
-			archorSum += archor.get(i).getNumberOfUnit();
+	public int gatherCompanion(Character character) {
+		System.out.println("소유 금액은 " + character.getMoney() + "입니다");
+		for (int i = 1; i <= Companion.demandMoneys.length; i++) {
+			System.out.println(i + ". " + Companion.names[i - 1] + " 생산시 " + Companion.demandMoneys[i - 1] + "원 필요");
 		}
-		
-		int soldierSum = 0; 
-		for(int i = 0; i < soldier.size(); i++){
-			soldierSum+= soldier.get(i).getNumberOfUnit();
+		return inputNo(Companion.demandMoneys.length);
+	}
+
+	public int numberCompanion(int no) {
+		System.out.print("얼마나 생산하시겠습니까?");
+		int number = sc.nextInt();
+		return number;
+	}
+
+	public void showMyCompanion(Character character) {
+		List<Companion> comList = character.companionList;
+		System.out.println("=== 보유 병력 현황 ===");
+		for (int i = 1; i <= comList.size(); i++) {
+			System.out.print(i + ". " + comList.get(i - 1).getName() + " ");
+			System.out.print(comList.get(i - 1).getVolume() + "명" + "\t");
+			System.out.print("총 공격력: " + comList.get(i - 1).getAttack() + "\t");
+			System.out.print("총 방어력: " + comList.get(i - 1).getDefense() + "\t");
+			System.out.println();
 		}
-		
-		int seigerSum = 0; 
-		for(int i = 0; i < seiger.size(); i++){
-		 seigerSum += seiger.get(i).getNumberOfUnit();
-		}
-		
-		System.out.println(Companion.names[0]+"의 숫자는 "+archorSum+"명 입니다");
-		System.out.println(Companion.names[1]+"의 숫자는 "+soldierSum+"명 입니다");
-		System.out.println(Companion.names[2]+"의 숫자는 "+seigerSum+"명 입니다");
-		System.out.println("보유한 군량미는 "+character.getFood()+"석 입니다");
 	}
 }
