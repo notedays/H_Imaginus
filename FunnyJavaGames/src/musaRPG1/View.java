@@ -58,6 +58,8 @@ public class View {
 				no = sc.nextInt();
 			} catch (Exception e) {
 				System.out.println("잘못된 번호를 입력하였습니다.");
+			} finally {
+				sc.nextLine();
 			}
 		} while (no < 1 || no > limitNo);
 		return no;
@@ -218,14 +220,14 @@ public class View {
 				System.out.print( maxNumber + "개 까지 가능"+"\n");
 				System.out.print("값을 입력하세요 :");
 				number = sc.nextInt();
-			} catch (InputMismatchException qq) {
-				System.out.println("똑띠 입력해라");
+			} catch (Exception e) {
+				System.out.println("정수값을 입력해 주세요");
+				continue;
 			}
 			if (number <= maxNumber) {
 				return number;
 			} else {
 				System.out.println("범위내 숫자를 입력해 주세요");
-				
 			}
 		}
 	}
