@@ -1,7 +1,5 @@
 package musaRPG;
 
-import java.io.File;
-import java.util.Scanner;
 
 public class MusaRpg {
 	public static void main(String[] args) {
@@ -12,6 +10,9 @@ public class MusaRpg {
 	
 	// # View
 	View view = new View();
+	
+	// # SoundPlayer
+	SoundPlayer soundPlayer = SoundPlayer.getInstance();
 	
 	// # 캐릭터
 	Character character;
@@ -24,12 +25,15 @@ public class MusaRpg {
 		
 		String[] musics = {"muhyul_bgm.mp3","iljimae_bgm.mp3"}; 
 		// # 배경 음악 재생
-		new Thread(){
-			public void run() {
-				SoundPlayer.playBGM(new File("resources/"+musics[character.getCode()-1]));
-			};
-		}.start();
-
+		soundPlayer.playBgm(musics[character.getCode()-1]);
+		
+		soundPlayer.stopBgm();
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		// # 행동 선택
 		int actionNo = -1;
 		do{
