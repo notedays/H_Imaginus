@@ -53,6 +53,16 @@ public enum Character {
 	}
 
 	// # 추가 메소드
+	public boolean usdFood(int useFood){
+		if(food >= useFood){
+			this.food -= useFood;
+			System.out.println("군량미 "+useFood+"만큼 사용");
+			return true;
+		}else{
+			this.food = 0;
+			System.out.println("군량미가 부족합니다, 퇴각합니다");
+		}return false;
+	}
 	
 	public void obtainCastle(Castles castle){
 		castles.add(castle);

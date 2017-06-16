@@ -1,5 +1,6 @@
 package musaRPG1;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,7 +20,7 @@ public class View {
 		return characterArray[charIdx];
 	}
 
-	public final static String[] actionNames = { "전투 하기", "정보 보기", "아이템 상점", "스킬 배우기", "병참 관리" };
+	public final static String[] actionNames = { "전투 하기", "정보 보기", "아이템 상점", "스킬 배우기", "공성전 관리" };
 
 	public int selectAction(Character character) {
 		System.out.println("\n플레이어 [ " + character.getName() + " ] ");
@@ -98,7 +99,7 @@ public class View {
 	}
 
 	public int selectManage() {
-		String[] namageLists = { "병사 충원", "성벽 보수", "병사 배치", "성 공격", "병참 현황", "성 보유 현황", "돌아가기" };
+		String[] namageLists = { "병사 충원", "군량미 구매", "병사 배치", "성 공격", "병참 현황", "성 보유 현황", "돌아가기" };
 		for (int i = 1; i <= namageLists.length; i++) {
 			System.out.println(i + ". " + namageLists[i - 1]);
 		}
@@ -166,8 +167,7 @@ public class View {
 		List<Companion> companionList = character.companionList;
 		System.out.println("===배치 가능한 목록===");
 		for (int i = 1; i <= companionList.size(); i++) {
-			System.out.println(i + ". " + companionList.get(i - 1).getName() + " "
-					+ companionList.get(i - 1).getAmount() + " 마리 배치 가능");
+			System.out.println(i + ". " + companionList.get(i - 1).getName() + " " + " 배치");
 		}
 		return inputNo(companionList.size());
 	}
@@ -175,11 +175,63 @@ public class View {
 	public int chooseCastle(Character character) {
 		List<Castles> castleList = character.castles;
 		System.out.println("===배치 가능한 내성 목록===");
-		
+
 		for (int i = 1; i <= castleList.size(); i++) {
-			System.out.print(i + ". " + castleList.get(i-1).getName()+"\t");
-			System.out.print(castleList.get(i-1).getAccomodate() + "명 수용 가능");
+			System.out.print(i + ". " + castleList.get(i - 1).getName() + " 배치" + "\t");
+			System.out.print("(" + castleList.get(i - 1).getMaxCount() + "명의 병사 수용 가능" + ")");
+			System.out.println();
 		}
 		return inputNo(castleList.size());
 	}
+
+	public int numberDeploy(Character character, Castles castle) {
+		while (true) {
+			int number = 0;
+			try {
+				System.out.println(castle.getName() + "에서는 최대 " + castle.getMaxCount() + "명 까지 배치 가능합니다");
+				showMyCompanion(character);
+				System.out.print("몇 명 배치하시겠습니까?");
+				number = sc.nextInt();
+
+			} catch ( Exception e) {
+				System.out.print("숫자를 입력해 주세요");
+			}
+
+			if (number <= castle.getMaxCount() && number >= 0) {
+				return number;
+			} else {
+				System.out.println("범위내 숫자를 입력해 주세요");
+			}
+		}
+	}
+	
+	public int numberFood(Character chracter){
+		System.out.println("군량미 1석 : 500원");
+		int maxBuy = (int)(chracter.getMoney() / 50);
+		return returnNumber(maxBuy);
+	}
+	
+	public int returnNumber(int maxNumber){
+		while (true) {
+			int number = 0;
+			try {
+				System.out.print( maxNumber + "개 까지 가능"+"\n");
+				System.out.print("값을 입력하세요 :");
+				number = sc.nextInt();
+			} catch (InputMismatchException qq) {
+				System.out.println("똑띠 입력해라");
+			}
+			if (number <= maxNumber) {
+				return number;
+			} else {
+				System.out.println("범위내 숫자를 입력해 주세요");
+				
+			}
+		}
+	}
+	
+	
+	
+	
+	
 }

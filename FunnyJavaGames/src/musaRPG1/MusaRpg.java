@@ -38,6 +38,9 @@ public class MusaRpg {
 		character.companionList.add(archor);
 		character.companionList.add(soldier);
 		character.companionList.add(seiger);
+		character.companionList.get(0).addAmount(1);
+		character.companionList.get(1).addAmount(1);
+		character.companionList.get(2).addAmount(1);
 
 		String[] musics = { "muhyul_bgm.mp3", "iljimae_bgm.mp3" };
 		// # 배경 음악 재생
@@ -46,6 +49,9 @@ public class MusaRpg {
 				SoundPlayer.playBGM(new File("resources/" + musics[character.getCode() - 1]));
 			};
 		}.start();
+
+		// # 초기 성 설정
+		character.castles.add(Castles.JOENJU_SUNG);
 
 		// # 행동 선택
 		int actionNo = -1;
@@ -58,7 +64,6 @@ public class MusaRpg {
 		System.out.println("게임을 종료합니다.");
 		System.exit(1);
 	}
-	
 
 	private void action(int actionNo) {
 		switch (actionNo) {
@@ -90,7 +95,6 @@ public class MusaRpg {
 	}
 
 	// 컨트롤러 메소드
-
 	private void learnSkill(int choiceSkill) {
 		switch (choiceSkill) {
 		case ActionModel.LEARN_SKILL:
@@ -142,15 +146,27 @@ public class MusaRpg {
 			}
 			break;
 
-		case ActionModel.ENFORCEMENT:
+		case ActionModel.MAKE_FOOD:
+			int numFood = view.numberFood(character);
 			break;
 
-		case ActionModel.DEPLOYMENT:	
-			view.chooseCastle(character);			
-			int deployChoice = view.deployCompanion(character);
-			
+		case ActionModel.DEPLOYMENT:
+			try {
+				if (character.castles.get(0) == null) {
+				}
+				int chooseCastle = view.chooseCastle(character);
+				int deployChoice = view.deployCompanion(character);
+
+				Castles myCastle = character.castles.get(chooseCastle - 1);
+				int numberDeploy = view.numberDeploy(character, myCastle);
+
+				action.makeDeploy(myCastle, deployChoice, numberDeploy);
+
+			} catch (Exception e) {
+				System.out.println("배치 할 성이 없습니다");
+			}
 			break;
-			
+
 		case ActionModel.CASTLE_ATTACK: {
 			int choice = view.selectCastle();
 			Castles[] castleChoice = Castles.values();
@@ -159,18 +175,29 @@ public class MusaRpg {
 			if (character.castles.contains(castle)) {
 				System.out.println("이미 보유한 성입니다");
 			} else {
-				int attackChoice = view.selectCastleBattle();
-				action.castleAttack(castle, attackChoice);
+				//	군량미가 0보다 큰 경우 공성 가능 
+				if (character.getFood() > 0) {
+					// 적 성의피가 0이 되거나 내 군량미가 0 보다 작아지는 경우 와일문 종료
+					while (castle.getCastleHp() > 0 && character.getFood() > 0) {
+						int attackChoice = view.selectCastleBattle();
+						action.castleAttack(castle, attackChoice);
+					}
+				}else{
+					System.out.println("군량미 부족으로 전투 불가");
+				}
 			}
 			break;
 		}
+
 		case ActionModel.SHOW_MY_COMPANY: {
 			view.showMyCompanion(character);
 			break;
 		}
+
 		case ActionModel.SHOW_MY_CASTLE: {
 			view.showMyCastle(character);
 		}
+
 		}
 	}
 
