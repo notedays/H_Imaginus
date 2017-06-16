@@ -192,7 +192,6 @@ public class ActionModel {
 	}
 
 	public void castleAttack(Castles castle, int attackChoice) {
-
 		Companion archorList = character.companionList.get(Companion.ARCHOR - 1);
 		Companion soldierList = character.companionList.get(Companion.SOLDIER - 1);
 		Companion siegerList = character.companionList.get(Companion.SIEGER - 1);
@@ -208,8 +207,6 @@ public class ActionModel {
 
 		} else if (soldierList.getAmount() != 0 && attackChoice == Companion.SOLDIER) { // 근거리
 			int soldierTotalAttack = character.companionList.get(Companion.SOLDIER - 1).getAttack();
-			castle.getDamaged(soldierTotalAttack);
-
 			// 성 공격중 성 hp가 0이 될경우 해당성 획득
 			if (castle.getDamaged(soldierTotalAttack) == true)
 				character.obtainCastle(castle);
@@ -223,9 +220,20 @@ public class ActionModel {
 			// 성 공격중 성 hp가 0이 될경우 해당성 획득
 			if (castle.getDamaged(seigerTotalAttack + character.getLevel() * 2) == true)
 				character.obtainCastle(castle);
-		}else{
-			System.out.println("병력을 생산하세요");
+		} else {
+			System.out.println("병력을 생산하십시오");
 		}
 	}
-
+	
+	public void deployCompany(int deployChoice, int number){
+		
+		/*
+		//	궁사 배치 시
+		if(deployChoice == Companion.ARCHOR){
+			character.castles
+			
+		}
+		*/
+	}
+	
 }// actionModel문 종료

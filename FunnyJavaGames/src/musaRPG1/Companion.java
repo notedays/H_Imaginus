@@ -26,8 +26,8 @@ public class Companion {
 		this.code = code;
 		this.attack = level * 5;
 		this.defense = level * 5;
-		this.hp = level * 5;
-		this.maxHp = level * 5;
+		this.hp = 1;
+		this.maxHp = 1;
 		this.volume = 0;
 		this.demandMoney = demandMoneys[code - 1];
 		this.explanation = explanations[code - 1];
@@ -36,24 +36,25 @@ public class Companion {
 
 	
 	// 추가 메소드
+	
+	
 	public void addAmount(int volume) {
 		this.volume = this.volume + volume;
 	}
 
 	public void getDamage(int damage) {
-		if (this.volume - damage <= 0) {
+		if ( volume - damage <= 0) {
 			this.volume = 0;
 			System.out.println(this.name+"병사가 전멸했습니다");
 		} else {
 			this.volume -= damage;
+			System.out.println("병사가 "+damage+"만큼 데미지를 입었습니다");
+			System.out.println("남은 병사의 수는 "+volume+" 입니다");
 		}
 	}
-	
 	public int getAmount(){
 		return volume;
 	}
-	
-	
 	
 	//// getter, setter
 	public int getCode() {

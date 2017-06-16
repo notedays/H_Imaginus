@@ -98,7 +98,7 @@ public class View {
 	}
 
 	public int selectManage() {
-		String[] namageLists = { "병사 충원", "성벽 보수", "병사 배치", "성 공격", "병참 현황", "성 보유 현황", "돌아가기"};
+		String[] namageLists = { "병사 충원", "성벽 보수", "병사 배치", "성 공격", "병참 현황", "성 보유 현황", "돌아가기" };
 		for (int i = 1; i <= namageLists.length; i++) {
 			System.out.println(i + ". " + namageLists[i - 1]);
 		}
@@ -122,7 +122,7 @@ public class View {
 	}
 
 	public int selectCastleBattle() {
-		String[] castleBattle = { "궁수 공격", "보병 공격", "공성추 공격", "돌아가기" };
+		String[] castleBattle = { "궁수 공격", "보병 공격", "공성추 공격" };
 		for (int i = 1; i <= castleBattle.length; i++) {
 			System.out.println(i + ". " + castleBattle[i - 1]);
 		}
@@ -154,15 +154,32 @@ public class View {
 			System.out.println();
 		}
 	}
-	
-	public void showMyCastle(Character character){
+
+	public void showMyCastle(Character character) {
 		System.out.println("===보유성 현황===");
-		for(int i=1; i <= character.castles.size(); i++){
-			System.out.println(i+". "+character.castles.get(i-1).getName());
+		for (int i = 1; i <= character.castles.size(); i++) {
+			System.out.println(i + ". " + character.castles.get(i - 1).getName());
 		}
 	}
-	
-	
-	
-	
+
+	public int deployCompanion(Character character) {
+		List<Companion> companionList = character.companionList;
+		System.out.println("===배치 가능한 목록===");
+		for (int i = 1; i <= companionList.size(); i++) {
+			System.out.println(i + ". " + companionList.get(i - 1).getName() + " "
+					+ companionList.get(i - 1).getAmount() + " 마리 배치 가능");
+		}
+		return inputNo(companionList.size());
+	}
+
+	public int chooseCastle(Character character) {
+		List<Castles> castleList = character.castles;
+		System.out.println("===배치 가능한 내성 목록===");
+		
+		for (int i = 1; i <= castleList.size(); i++) {
+			System.out.print(i + ". " + castleList.get(i-1).getName()+"\t");
+			System.out.print(castleList.get(i-1).getAccomodate() + "명 수용 가능");
+		}
+		return inputNo(castleList.size());
+	}
 }

@@ -59,7 +59,6 @@ public class MusaRpg {
 		System.exit(1);
 	}
 	
-	
 
 	private void action(int actionNo) {
 		switch (actionNo) {
@@ -146,9 +145,12 @@ public class MusaRpg {
 		case ActionModel.ENFORCEMENT:
 			break;
 
-		case ActionModel.DEPLOYMENT:
-
+		case ActionModel.DEPLOYMENT:	
+			view.chooseCastle(character);			
+			int deployChoice = view.deployCompanion(character);
+			
 			break;
+			
 		case ActionModel.CASTLE_ATTACK: {
 			int choice = view.selectCastle();
 			Castles[] castleChoice = Castles.values();

@@ -7,10 +7,10 @@ import javax.sql.rowset.CachedRowSet;
 
 public enum Castles {
 	// 주요 성(100~199) 
-	JOENJU_SUNG(100, 1, "전주성", "교통의 요지, 전주를 방어하는 성", 5, 100, 20, 1, 10, 10, new ArrayList<Companion>()),
-	DONGRAE_SUNG(101, 1, "동래성", "해상교역의 중심, 부산을 방어하는 성", 5, 100, 20, 1, 100, 100, new ArrayList<Companion>()),
-	PUSAN_SUNG(102, 1, "부산성", "해상교역의 중심, 부산을 방어하는 성", 5, 100, 20, 1, 100, 100, new ArrayList<Companion>()),
-	MASAN_SUNG(103, 1, "마산성", "해상교역의 중심, 부산을 방어하는 성", 5, 100, 20, 1, 100, 100, new ArrayList<Companion>());
+	JOENJU_SUNG(100, 1, "전주성", "교통의 요지, 전주를 방어하는 성", 1, 100, 5, 1, 10, 10, new ArrayList<Companion>()),
+	DONGRAE_SUNG(101, 1, "동래성", "해상교역의 중심, 부산을 방어하는 성", 1, 100, 5, 1, 100, 100, new ArrayList<Companion>()),
+	PUSAN_SUNG(102, 1, "부산성", "해상교역의 중심, 부산을 방어하는 성", 1, 100, 5, 1, 100, 100, new ArrayList<Companion>()),
+	MASAN_SUNG(103, 1, "마산성", "해상교역의 중심, 부산을 방어하는 성", 1, 100, 5, 1, 100, 100, new ArrayList<Companion>());
 	
 	private int code;
 	private int level;
