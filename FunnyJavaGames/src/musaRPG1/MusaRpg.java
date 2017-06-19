@@ -91,6 +91,11 @@ public class MusaRpg {
 		case ActionModel.MANAGE_RESOURCE:
 			int manageNo = view.selectManage();
 			manageResource(manageNo);
+			
+		case ActionModel.MANAGE_CASTLE:
+			action.generateGold(1);
+			
+			
 		}
 	}
 
@@ -148,6 +153,7 @@ public class MusaRpg {
 
 		case ActionModel.MAKE_FOOD:
 			int numFood = view.numberFood(character);
+			action.makeFood(numFood);
 			break;
 
 		case ActionModel.DEPLOYMENT:
@@ -156,12 +162,11 @@ public class MusaRpg {
 				}
 				int chooseCastle = view.chooseCastle(character);
 				int deployChoice = view.deployCompanion(character);
-
+				int numberChoice = view.castleNumberCompanion(character, deployChoice);
 				Castles myCastle = character.castles.get(chooseCastle - 1);
-				int numberDeploy = view.numberDeploy(character, myCastle);
-
-				action.makeDeploy(myCastle, deployChoice, numberDeploy);
-
+				action.makeDeploy(myCastle, deployChoice, numberChoice);
+				
+				
 			} catch (Exception e) {
 				System.out.println("배치 할 성이 없습니다");
 			}
@@ -196,6 +201,7 @@ public class MusaRpg {
 
 		case ActionModel.SHOW_MY_CASTLE: {
 			view.showMyCastle(character);
+			break;
 		}
 
 		}

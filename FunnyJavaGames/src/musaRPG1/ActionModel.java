@@ -14,6 +14,7 @@ public class ActionModel {
 	public static final int ITEM_MARKET = 3;
 	public static final int SKILL_LEARN = 4;
 	public static final int MANAGE_RESOURCE = 5;
+	public static final int MANAGE_CASTLE = 6;	//	성 관리
 
 	// # 전투 코드
 	public static final int NORMAL_ATTACK = 1;
@@ -201,18 +202,23 @@ public class ActionModel {
 
 		} else if (archorList.getAmount() != 0 && attackChoice == Companion.ARCHOR) { // 원거리
 			int archorTotalAttack = character.companionList.get(Companion.ARCHOR - 1).getAttack();
+
 			// 궁사 공격력 만큼 군량미 소모, 군량미 다쓸 시 전투중단
-			
-			if (character.usdFood(archorList.getAttack()+30) == false){
+			if (character.usdFood(archorList.getAttack() + 30) == false) {
 				return;
 			}
-			
+
 			// 성 공격중 성 hp가 0이 될 경우 해당성 획득
 			if (castle.getDamaged(archorTotalAttack) == true)
 				character.obtainCastle(castle);
 
 		} else if (soldierList.getAmount() != 0 && attackChoice == Companion.SOLDIER) { // 근거리
 			int soldierTotalAttack = character.companionList.get(Companion.SOLDIER - 1).getAttack();
+	
+			// 궁사 공격력 만큼 군량미 소모, 군량미 다쓸 시 전투중단
+			if (character.usdFood(soldierList.getAttack() + 30) == false) {
+				return;
+			}
 			// 성 공격중 성 hp가 0이 될 경우 해당성 획득
 			if (castle.getDamaged(soldierTotalAttack) == true)
 				character.obtainCastle(castle);
@@ -223,6 +229,10 @@ public class ActionModel {
 		} else if (siegerList.getAmount() != 0 && attackChoice == Companion.SIEGER) { // 원거리
 			int seigerTotalAttack = character.companionList.get(Companion.SIEGER - 1).getAttack();
 
+			// 궁사 공격력 만큼 군량미 소모, 군량미 다쓸 시 전투중단
+			if (character.usdFood(siegerList.getAttack() + 30) == false) {
+				return;
+			}
 			// 성 공격중 성 hp가 0이 될 경우 해당성 획득
 			if (castle.getDamaged(seigerTotalAttack + character.getLevel() * 2) == true)
 				character.obtainCastle(castle);
@@ -230,75 +240,92 @@ public class ActionModel {
 			System.out.println("병력을 생산하십시오");
 		}
 	}
-	
+
 	// 성내 병력 배치
 	public void makeDeploy(Castles castle, int deployChoice, int number) {
 		switch (deployChoice) {
 		case Companion.ARCHOR:
-			if (character.companionList.get(Companion.ARCHOR-1).getAmount() >= number) {
+			if (character.companionList.get(Companion.ARCHOR - 1).getAmount() >= number) {
 				if (number <= castle.getMaxCount() - castle.getNowCount()) {
-					//성 공격력 수정
+					// 성 공격력 수정
 					castle.setAttack(
 							castle.getAttack() + (character.companionList.get(Companion.ARCHOR).getAttack() * number));
-					//성 수용인원수 수정
+					// 성 수용인원수 수정
 					castle.addCount(number);
 					System.out.println(
 							"성 공격력 " + character.companionList.get(Companion.ARCHOR).getAttack() * number + "만큼 상승");
+					// 내가 가진 병사 수 감소 시키기
+					character.companionList.get(Companion.ARCHOR - 1).minusAmount(number);
+
 				} else {
 					System.out.println("성 인원 가득 참");
 					return;
 				}
-			}else{
+			} else {
 				System.out.println("내가 가진 병사의 숫자가 부족합니다");
 			}
 			break;
 
 		case Companion.SOLDIER:
-			if (character.companionList.get(Companion.SOLDIER-1).getAmount() >= number) {
+			if (character.companionList.get(Companion.SOLDIER - 1).getAmount() >= number) {
 				if (number <= castle.getMaxCount() - castle.getNowCount()) {
-					//성 공격력 수정
+					// 성 공격력 수정
 					castle.setAttack(
 							castle.getAttack() + (character.companionList.get(Companion.SOLDIER).getAttack() * number));
-					//성 수용 인원수 수정
+					// 성 수용 인원수 수정
 					castle.addCount(number);
 					System.out.println(
 							"성 공격력 " + character.companionList.get(Companion.SOLDIER).getAttack() * number + "만큼 상승");
+					// 내가 가진 병사 수 감소 시키기
+					character.companionList.get(Companion.SOLDIER - 1).minusAmount(number);
 				} else {
 					System.out.println("성 인원 가득 참");
 					return;
 				}
-			}else{
+			} else {
 				System.out.println("내가 가진 병사의 숫자가 부족합니다");
 			}
 			break;
 
 		case Companion.SIEGER:
-			if (character.companionList.get(Companion.SIEGER-1).getAmount() >= number) {
+			if (character.companionList.get(Companion.SIEGER - 1).getAmount() >= number) {
 				if (number <= castle.getMaxCount() - castle.getNowCount()) {
-					//성 공격력 수정
+					// 성 공격력 수정
 					castle.setAttack(
 							castle.getAttack() + (character.companionList.get(Companion.SIEGER).getAttack() * number));
-					//성 수용인원수 수정
+					// 성 수용인원수 수정
 					castle.addCount(number);
 					System.out.println(
 							"성 공격력 " + character.companionList.get(Companion.SIEGER).getAttack() * number + "만큼 상승");
+					// 내가 가진 병사 수 감소 시키기
+					character.companionList.get(Companion.SIEGER - 1).minusAmount(number);
 				} else {
 					System.out.println("성 인원 가득 참");
 					return;
 				}
-			}else{
+			} else {
 				System.out.println("내가 가진 병사의 숫자가 부족합니다");
 			}
 			break;
 		}
-	}//성내 병력배치 끝
+	}// 성내 병력배치 끝
+
+	public void makeFood(int no) {
+		//군량미 개당 50원
+		if( character.useMoney(no * 50) == true){
+			int myFood = (character.getFood() + no);
+			character.setFood(myFood);
+		}else{
+			return;
+		}
+	}
 	
-	public void makeFood(int no){		
-		int myFood = ( character.getFood() + no );
+	public void generateGold(int no){
+		
+		Thread t = new Thread(new GoldGenerator(no));
+		t.setDaemon(true);
+		t.start();
 		
 	}
 
-	
-	
-	
 }// actionModel문 종료

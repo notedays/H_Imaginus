@@ -34,28 +34,39 @@ public class Companion {
 		this.name = names[code - 1];
 	}
 
-	
 	// 추가 메소드
-	
-	
+
+	public void minusAmount(int inputVolume) {
+		if (volume - inputVolume <= 0) {
+			this.volume = 0;
+			System.out.println("배치 후 "+this.name +"의 수는 0입니다");
+			
+		} else {
+			this.volume -= inputVolume;
+			System.out.println("병사가 " + inputVolume + "만큼 감소 했습니다");
+			System.out.println("남은 병사의 수는 " + volume + " 입니다");
+		}
+	}
+
 	public void addAmount(int volume) {
 		this.volume = this.volume + volume;
 	}
 
 	public void getDamage(int damage) {
-		if ( volume - damage <= 0) {
+		if (volume - damage <= 0) {
 			this.volume = 0;
-			System.out.println(this.name+"병사가 전멸했습니다");
+			System.out.println(this.name + "병사가 전멸했습니다");
 		} else {
 			this.volume -= damage;
-			System.out.println("병사가 "+damage+"만큼 데미지를 입었습니다");
-			System.out.println("남은 병사의 수는 "+volume+" 입니다");
+			System.out.println("병사가 " + damage + "만큼 데미지를 입었습니다");
+			System.out.println("남은 병사의 수는 " + volume + " 입니다");
 		}
 	}
-	public int getAmount(){
+
+	public int getAmount() {
 		return volume;
 	}
-	
+
 	//// getter, setter
 	public int getCode() {
 		return code;

@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum Character {
-	MUHYUL(1, "무휼", "초급 의병장", 1, 5, 0, 1, 1000, 100, 10, 10, 10000, 100, new Inventory<Item>(), new ArrayList<Skill>(),
-			new ArrayList<Castles>(), new ArrayList<Companion>()),
+	MUHYUL(1, "무휼", "초급 의병장", 1, 5, 0, 1, 1000, 100, 10, 10, 10000, 100,
+			new Inventory<Item>(), new ArrayList<Skill>(),
+			new ArrayList<Castles>(), new ArrayList<Companion>(), new ArrayList<GoldGenerator>() ),
 	
 	ILJIMAE(2, "일지매", "초급 의병장", 1, 5, 0, 1, 1000, 100, 10, 10, 10000, 100,
 			new Inventory<Item>(), new ArrayList<Skill>(),
-			new ArrayList<Castles>(), new ArrayList<Companion>());
+			new ArrayList<Castles>(), new ArrayList<Companion>(), new ArrayList<GoldGenerator>() );
 
 	private final int code;
 	private final String name;
@@ -29,10 +30,11 @@ public enum Character {
 	public List<Skill> skillList;
 	public List<Castles> castles;
 	public List<Companion> companionList;
+	public List<GoldGenerator> goldGeneratorList;
 	
 	private Character(int code, String name, String grade, int level, int attack, int exp, int maxExp, int hp,
 			int maxHp, int mp, int maxMp, int money, int food, Inventory<Item> inventory, List<Skill> skillList,
-			List<Castles> castles, List<Companion> companionList) {
+			List<Castles> castles, List<Companion> companionList, List<GoldGenerator> goldGeneratorList){
 		this.code = code;
 		this.name = name;
 		this.grade = grade;
@@ -48,8 +50,10 @@ public enum Character {
 		this.food = food;
 		this.inventory = inventory;
 		this.skillList = skillList;
-		this.castles = castles;		//보유한 성 리스트 
+		this.castles = castles;		
 		this.companionList = companionList;
+		this.goldGeneratorList = goldGeneratorList;
+		
 	}
 
 	// # 추가 메소드
@@ -129,11 +133,14 @@ public enum Character {
 		System.exit(1);
 	}
 	
-	public void useMoney(int useMoney){
+	public boolean useMoney(int useMoney){
 		if(money >= useMoney){
 			money -= useMoney;
 			System.out.println(useMoney + " 원을 사용했습니다");
-		}
+			return true;
+		}else{
+			System.out.println("돈이 부족합니다");
+		}return false;
 	}
 	
 	
@@ -150,6 +157,7 @@ public enum Character {
 
 	public void setFood(int food) {
 		this.food = food;
+		System.out.println("군량미가 추가되어 "+this.food+"만큼 보유 중");
 	}
 
 	public int getMoney() {
