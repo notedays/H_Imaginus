@@ -1,6 +1,5 @@
 package musaRPG1;
 
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,8 +19,18 @@ public class View {
 		return characterArray[charIdx];
 	}
 
-	public final static String[] actionNames = { "전투 하기", "정보 보기", "아이템 상점", "스킬 배우기", "공성전 관리", "성 관리", "테스트" };
+	public final static String[] actionNames = { "전투 하기", "캐릭터 정보 보기", "아이템 상점", "스킬 배우기", "공성전 관리", "성 관리"};
 
+	public void showCharacter(Character character){
+		System.out.println("내 레벨: " + character.getLevel());
+		System.out.println("내 체력: " + character.getHp() + "/" + character.getMaxHp());
+		System.out.println("내 마력: " + character.getMp() + "/" + character.getMaxMp());
+		System.out.println("내 경험치: " + character.getExp() + "/" + character.getMaxExp());
+		System.out.println("내 공격력: " + character.getAttack());
+		System.out.println("내 소지금: " + character.getMoney());
+		
+	}
+	
 	public int selectAction(Character character) {
 		System.out.println("\n플레이어 [ " + character.getName() + " ] ");
 		for (int i = 1; i <= actionNames.length; i++) {
@@ -33,7 +42,7 @@ public class View {
 
 	public int selectBattle(Character character, Enemy enemy) {
 		System.out.println("\n적 [" + enemy.getName() + "] 등장!!!");
-		String[] battleNames = { "일반 공격", "기술 사용", "도망가기", "피하기" };
+		String[] battleNames = { "일반 공격", "기술 사용", "도망가기", "피하기", "물약 사용" };
 		for (int i = 1; i <= battleNames.length; i++) {
 			System.out.println(i + ". " + battleNames[i - 1]);
 		}
@@ -295,7 +304,13 @@ public class View {
 		}
 		return inputNo(foodGenerator.length);
 	}
-
 	
+	public int showPortion(){
+		String[] portionName = {"빨간 물약", "파란 물약"};
+		for (int i = 1; i <= portionName.length; i++) {
+			System.out.println(i + ". " + portionName[i - 1] + "을 사용합니다");
+		}
+		return inputNo(portionName.length);
+	}
 	
 }

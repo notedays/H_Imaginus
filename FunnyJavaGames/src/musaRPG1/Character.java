@@ -62,6 +62,7 @@ public enum Character {
 	
 	public void getMoney(int obtainMoney){
 		this.money += obtainMoney;
+		
 	}
 	
 	public boolean usdFood(int useFood){
@@ -87,7 +88,7 @@ public enum Character {
 
 	public void battleWin(int exp, Item item) {
 		this.exp += exp;
-		System.out.println(this.exp + "/" + maxExp);
+		System.out.println("현재 경험치: "+this.exp + "/" + "최대 경험치: "+maxExp);
 		if (this.exp >= maxExp)
 			levelUp();
 		if (item != null) {
@@ -106,7 +107,17 @@ public enum Character {
 		this.maxMp += 10;
 		System.out.println("levelUp++ :" + level);
 	}
+	
+	public void plusHp(int portion){
+		hp = ( (hp + portion) >= maxHp) ? maxHp : hp+portion;
+		
+	}
 
+	public void plusMp(int MpPortion){
+		mp = ( (mp + MpPortion) >= maxMp) ? maxMp : hp+MpPortion;
+		
+	}
+	
 	public int getDamaged(int damage) {
 		hp = (hp >= damage) ? hp - damage : 0;
 		return hp;

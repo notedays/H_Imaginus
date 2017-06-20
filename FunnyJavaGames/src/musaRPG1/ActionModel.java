@@ -22,6 +22,7 @@ public class ActionModel {
 	public static final int SKILL_ATTACK = 2;
 	public static final int RUN_ATTACK = 3;
 	public static final int EVATION_ATTACK = 4;
+	public static final int USE_PORTION = 5;
 
 	// # 공성전 메뉴
 	public static final int GATHER = 1; // 병사 모집
@@ -38,7 +39,6 @@ public class ActionModel {
 	// # INSTALL_MACHINE 관리 메뉴
 	public static final int INSTALL_GOLD = 1;
 	public static final int INSTALL_FARM = 2;
-	public static final int INSTALL_RECYCLE = 3;
 
 	// # 성 공격
 	public static final int ARCHOR_ATTACK = 1;
@@ -48,7 +48,12 @@ public class ActionModel {
 	// # 스킬 코드(SKILL_LEARN)
 	public static final int LEARN_SKILL = 1;
 	public static final int DELETE_SKILL = 2;
-
+	
+	// # 포션 사용 코드 
+	public static final int USE_HP_PORTION = 1;
+	public static final int USE_MP_PORTION = 2;
+	
+	
 	View view = new View();
 
 	// # 싱글 톤
@@ -344,21 +349,44 @@ public class ActionModel {
 		List<GoldGenerator> goldGeneratorList = character.castles.get(castleChoice-1).goldGeneratorList;
 		for (int i = 0; i < goldGeneratorList.size(); i++) {
 				goldGeneratorList.get(i).gatherMoney(character);
-				System.out.println("골드 수거 완료");
 				System.out.println(character.getMoney()+"원 보유 중");
+			}
+		
+		List<FoodGenerator> foodGeneratorList = character.castles.get(castleChoice-1).foodGeneratorList;
+		for (int i = 0; i < foodGeneratorList.size(); i++) {
+				foodGeneratorList.get(i).gatherFood(character);
+				System.out.println(character.getFood()+"석 보유 중");
 			}
 		}
 	
-	
 	public void generateFood(int no, int castleChoice) {
-		List<GoldGenerator> goldGeneratorList = character.castles.get(castleChoice-1).goldGeneratorList;
-		GoldGenerator t = new GoldGenerator(no);
-		goldGeneratorList.add(t);
+		List<FoodGenerator> foodGeneratorList = character.castles.get(castleChoice-1).foodGeneratorList;
+		FoodGenerator t = new FoodGenerator(no);
+		foodGeneratorList.add(t);
 		t.setDaemon(true);
 		t.start();
-		int money = GoldGenerator.prices[no-1];
+		int money = FoodGenerator.prices[no-1];
 		character.useMoney(money);
 	}
 	
+	public void usePortion(int no){
+		switch (no) {
+		case ActionModel.USE_HP_PORTION:
+			int heal = (int)( character.getMaxHp() / 5 );
+			character.plusHp(heal);
+			System.out.println(heal+"만큼 체력 회복");
+			
+			character.useMoney(heal);
+			break;
+
+		case ActionModel.USE_MP_PORTION:
+			int healMp = (int)( character.getMaxMp() / 5 );
+			character.plusMp(healMp);
+			System.out.println(healMp+"만큼 마력 회복");
+			
+			character.useMoney(healMp);			
+			break;
+		}
+	}
 	
 }// actionModel문 종료

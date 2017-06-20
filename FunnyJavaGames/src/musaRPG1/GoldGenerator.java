@@ -42,6 +42,7 @@ public class GoldGenerator extends Thread {
 	public void gatherMoney(Character character) {
 		character.getMoney(gold);
 		this.gold = 0;
+		System.out.println("돈을 획득했습니다");
 	}
 
 	// getter, setter

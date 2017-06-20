@@ -78,7 +78,8 @@ public class MusaRpg {
 
 			break;
 		case ActionModel.SHOW_INFO:
-
+			view.showCharacter(character);
+			view.showMyCompanion(character);
 			break;
 		case ActionModel.ITEM_MARKET:
 			break;
@@ -142,6 +143,11 @@ public class MusaRpg {
 				enemy.setHp(0);
 			}
 			break;
+			
+		case ActionModel.USE_PORTION:
+			int choosePortion = view.showPortion();
+			action.usePortion(choosePortion);
+			
 		}
 	}
 
@@ -227,14 +233,11 @@ public class MusaRpg {
 				int foodChoice = view.showFoodGenerator();
 				action.generateFood(foodChoice, castleChoice);
 				break;
-				
-			case ActionModel.INSTALL_RECYCLE:
-			
-				break;
 			}
 			break;
 
 		case ActionModel.COLLECT_RESOURCE:
+			// 한꺼번에 자원 수확
 			action.collectGold(castleChoice);
 			break;
 			
