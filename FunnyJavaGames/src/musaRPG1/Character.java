@@ -6,11 +6,11 @@ import java.util.List;
 public enum Character {
 	MUHYUL(1, "무휼", "초급 의병장", 1, 5, 0, 100, 100, 100, 10, 10, 10000, 100,
 			new Inventory<Item>(), new ArrayList<Skill>(),
-			new ArrayList<Castles>(), new ArrayList<Companion>(), new ArrayList<GoldGenerator>() ),
+			new ArrayList<Castles>(), new ArrayList<Companion>()),
 	
 	ILJIMAE(2, "일지매", "초급 의병장", 1, 5, 0, 100, 100, 100, 10, 10, 10000, 100,
 			new Inventory<Item>(), new ArrayList<Skill>(),
-			new ArrayList<Castles>(), new ArrayList<Companion>(), new ArrayList<GoldGenerator>() );
+			new ArrayList<Castles>(), new ArrayList<Companion>());
 
 	private final int code;
 	private final String name;
@@ -30,11 +30,11 @@ public enum Character {
 	public List<Skill> skillList;
 	public List<Castles> castles;
 	public List<Companion> companionList;
-	public List<GoldGenerator> goldGeneratorList;
+
 	
 	private Character(int code, String name, String grade, int level, int attack, int exp, int maxExp, int hp,
 			int maxHp, int mp, int maxMp, int money, int food, Inventory<Item> inventory, List<Skill> skillList,
-			List<Castles> castles, List<Companion> companionList, List<GoldGenerator> goldGeneratorList){
+			List<Castles> castles, List<Companion> companionList){
 		this.code = code;
 		this.name = name;
 		this.grade = grade;
@@ -52,12 +52,13 @@ public enum Character {
 		this.skillList = skillList;
 		this.castles = castles;		
 		this.companionList = companionList;
-		this.goldGeneratorList = goldGeneratorList;
-		
 	}
 
 	// # 추가 메소드	
 	
+	public void getFood(int obtainFood){
+		this.food += obtainFood;
+	}
 	
 	public void getMoney(int obtainMoney){
 		this.money += obtainMoney;

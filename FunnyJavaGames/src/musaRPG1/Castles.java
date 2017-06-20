@@ -6,13 +6,13 @@ import java.util.List;
 public enum Castles {
 	// 주요 성(100~199)
 	JOENJU_SUNG(100, 1, "전주성", "교통의 요지, 전주를 방어하는 성", 1, 100, 0, 5, 1, 10, 10,
-			new ArrayList<Companion>()),
+			new ArrayList<Companion>(), new ArrayList<GoldGenerator>(), new ArrayList<FoodGenerator>()),
 	DONGRAE_SUNG(101, 1, "동래성", "해상교역의 중심, 부산을 방어하는 성", 1, 100, 0, 5, 1, 100, 100,
-			new ArrayList<Companion>()), 
+			new ArrayList<Companion>(), new ArrayList<GoldGenerator>(), new ArrayList<FoodGenerator>()), 
 	PUSAN_SUNG(102, 1, "부산성", "해상교역의 중심, 부산을 방어하는 성", 1, 100, 0, 5, 1, 100, 100,
-			new ArrayList<Companion>()),
+			new ArrayList<Companion>(), new ArrayList<GoldGenerator>(), new ArrayList<FoodGenerator>()),
 	MASAN_SUNG(103, 1, "마산성", "해상교역의 중심, 부산을 방어하는 성", 1, 100, 0, 5, 1, 100, 100,
-			new ArrayList<Companion>());
+			new ArrayList<Companion>(), new ArrayList<GoldGenerator>(), new ArrayList<FoodGenerator>());
 
 	private int code;
 	private int level;
@@ -25,11 +25,13 @@ public enum Castles {
 	private int value;
 	private int castleHp;
 	private int castleMaxHp;
-
 	public List<Companion> cattleCompanionList;
+	public List<GoldGenerator> goldGeneratorList;
+	public List<FoodGenerator> foodGeneratorList;
 	
 	private Castles(int code, int level, String name, String explanation, int attack, int defense, int nowCount,
-			int maxCount, int value, int castleHp, int castleMaxHp, List<Companion> cattleCompanionList) {
+			int maxCount, int value, int castleHp, int castleMaxHp, List<Companion> cattleCompanionList,
+			List<GoldGenerator> goldGeneratorList, List<FoodGenerator> foodGeneratorList) {
 		this.code = code;
 		this.level = level;
 		this.name = name;
@@ -42,6 +44,8 @@ public enum Castles {
 		this.castleHp = castleHp;
 		this.castleMaxHp = castleMaxHp;
 		this.cattleCompanionList = cattleCompanionList;
+		this.goldGeneratorList = goldGeneratorList;
+		this.foodGeneratorList = foodGeneratorList;
 	}
 
 	// 추가 메소드

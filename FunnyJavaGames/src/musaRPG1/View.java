@@ -170,12 +170,14 @@ public class View {
 
 	}
 
-	public void showMyCastle(Character character) {
+	public int showMyCastle(Character character) {
 		System.out.println("===보유성 현황===");
 		for (int i = 1; i <= character.castles.size(); i++) {
 			System.out.println(i + ". " + character.castles.get(i - 1).getName());
 		}
+		return inputNo(character.castles.size());
 	}
+	
 
 	public int deployCompanion(Character character) {
 		List<Companion> companionList = character.companionList;
@@ -260,7 +262,7 @@ public class View {
 	}
 
 	public int showGenerator() {
-		String[] generator = { "금광 설치", "농장 설치", "재활용 기계 설치" };
+		String[] generator = { "금광 설치", "농장 설치" };
 		for (int i = 1; i <= generator.length; i++) {
 			System.out.println(i + ". " + generator[i - 1]);
 		}
@@ -285,10 +287,15 @@ public class View {
 		}
 		return inputNo(goldGenerator.length);
 	}
-
-	public void showTest(Character character) {
-		int a = character.goldGeneratorList.get(0).getGold();
-		System.out.println("금광 생산량: "+a);
-
+	
+	public int showFoodGenerator() {
+		String[] foodGenerator = FoodGenerator.names;
+		for (int i = 1; i <= foodGenerator.length; i++) {
+			System.out.println(i + ". " + foodGenerator[i - 1] + " 생산");
+		}
+		return inputNo(foodGenerator.length);
 	}
+
+	
+	
 }

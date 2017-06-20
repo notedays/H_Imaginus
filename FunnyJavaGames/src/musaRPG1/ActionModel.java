@@ -330,25 +330,35 @@ public class ActionModel {
 		}
 	}
 
-	public void generateGold(int no) {
-		
+	public void generateGold(int no, int castleChoice) {
+		List<GoldGenerator> goldGeneratorList = character.castles.get(castleChoice-1).goldGeneratorList;
 		GoldGenerator t = new GoldGenerator(no);
-		character.goldGeneratorList.add(t);
+		goldGeneratorList.add(t);
 		t.setDaemon(true);
 		t.start();
+		int money = GoldGenerator.prices[no-1];
+		character.useMoney(money);
 	}
 
-	public void collectGold() {
-		List<GoldGenerator> goldGeneratorList = character.goldGeneratorList;
+	public void collectGold(int castleChoice) {
+		List<GoldGenerator> goldGeneratorList = character.castles.get(castleChoice-1).goldGeneratorList;
 		for (int i = 0; i < goldGeneratorList.size(); i++) {
-			if (goldGeneratorList.get(i).getGold() == goldGeneratorList.get(i).getMaxGold()) {
 				goldGeneratorList.get(i).gatherMoney(character);
-				goldGeneratorList.get(i).run();
-			}else{
-				goldGeneratorList.get(i).gatherMoney(character);
+				System.out.println("골드 수거 완료");
+				System.out.println(character.getMoney()+"원 보유 중");
 			}
 		}
-		System.out.println("골드 수거 완료");
-		System.out.println(character.getMoney()+"원 보유 중");
+	
+	
+	public void generateFood(int no, int castleChoice) {
+		List<GoldGenerator> goldGeneratorList = character.castles.get(castleChoice-1).goldGeneratorList;
+		GoldGenerator t = new GoldGenerator(no);
+		goldGeneratorList.add(t);
+		t.setDaemon(true);
+		t.start();
+		int money = GoldGenerator.prices[no-1];
+		character.useMoney(money);
 	}
+	
+	
 }// actionModel문 종료

@@ -8,24 +8,28 @@ public class GoldGenerator extends Thread {
 	private int duration;
 	private int maxDuration;
 	private int time;
+	private int price;
 	private String name;
+	
 	static public String[] names = { "최하급 금광", "하급 금광", "중급 금광", "중상급 금광", "최상급 금광" };
-
+	static public int[] prices = { 1000, 10000, 100000, 500000, 700000};
+	
 	public GoldGenerator(int code) {
 		this.code = code;
 		this.gold = 0;
-		this.maxGold = 300000;
+		this.maxGold = 3000000;
 		this.duration = 100;
 		this.maxDuration = 100;
 		this.name = names[code - 1];
 		this.time = code * 3000;
+		this.price = prices[code-1];
 	}
 
 	public void run() {
 		while (true) {
 			try {
 				gold += code;
-				Thread.sleep(10 / code + 100);
+				Thread.sleep(1000 / code + 100);
 				if (gold >= maxGold) {
 					System.out.println("골드 광산이 꽉참");
 				}
@@ -41,9 +45,25 @@ public class GoldGenerator extends Thread {
 	}
 
 	// getter, setter
-
+	
 	public int getCode() {
 		return code;
+	}
+
+	public static String[] getNames() {
+		return names;
+	}
+
+	public static void setNames(String[] names) {
+		GoldGenerator.names = names;
+	}
+
+	public static int[] getPrices() {
+		return prices;
+	}
+
+	public static void setPrices(int[] prices) {
+		GoldGenerator.prices = prices;
 	}
 
 	public int getMaxGold() {
