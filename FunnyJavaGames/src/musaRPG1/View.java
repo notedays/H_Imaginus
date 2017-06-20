@@ -20,7 +20,7 @@ public class View {
 		return characterArray[charIdx];
 	}
 
-	public final static String[] actionNames = { "전투 하기", "정보 보기", "아이템 상점", "스킬 배우기", "공성전 관리", "성 관리" };
+	public final static String[] actionNames = { "전투 하기", "정보 보기", "아이템 상점", "스킬 배우기", "공성전 관리", "성 관리", "테스트" };
 
 	public int selectAction(Character character) {
 		System.out.println("\n플레이어 [ " + character.getName() + " ] ");
@@ -155,7 +155,6 @@ public class View {
 		return inputNo(Companion.demandMoneys.length);
 	}
 
-
 	public void showMyCompanion(Character character) {
 		List<Companion> comList = character.companionList;
 		System.out.println("=== 보유 병력 현황 ===");
@@ -167,8 +166,8 @@ public class View {
 			System.out.println();
 		}
 		System.out.println("=== 보유 자원 현황 ===");
-			System.out.println(character.getFood()+"만큼 군량미 보유");
-		
+		System.out.println(character.getFood() + "만큼 군량미 보유");
+
 	}
 
 	public void showMyCastle(Character character) {
@@ -222,12 +221,12 @@ public class View {
 
 	public int numberFood(Character chracter) {
 		System.out.println("군량미 1석 : 50원");
-		int maxBuy = (int)(chracter.getMoney()/50);
-		System.out.println(maxBuy+"개 까지 구입가능 합니다");
+		int maxBuy = (int) (chracter.getMoney() / 50);
+		System.out.println(maxBuy + "개 까지 구입가능 합니다");
 		return inputNumber(maxBuy);
 	}
-	
-	public int numberCompanion(int no){
+
+	public int numberCompanion(int no) {
 		System.out.print("몇 명 생산하시겠습니까 ?");
 		int num = sc.nextInt();
 		return num;
@@ -235,20 +234,61 @@ public class View {
 
 	public int castleNumberCompanion(Character character, int choice) {
 		switch (choice) {
-		case Companion.ARCHOR: 
-			Companion archor = character.companionList.get(Companion.ARCHOR-1);
+		case Companion.ARCHOR:
+			Companion archor = character.companionList.get(Companion.ARCHOR - 1);
 			System.out.println(archor.getName() + "\t" + archor.getAmount() + "명 배치 가능합니다");
 			return inputNumber(archor.getAmount());
 		case Companion.SOLDIER:
-			Companion soldier = character.companionList.get(Companion.SOLDIER-1);
+			Companion soldier = character.companionList.get(Companion.SOLDIER - 1);
 			System.out.println(soldier.getName() + "\t" + soldier.getAmount() + "명 배치 가능합니다");
 			return inputNumber(soldier.getAmount());
-			
+
 		case Companion.SIEGER:
-			Companion sieger = character.companionList.get(Companion.SIEGER-1);
+			Companion sieger = character.companionList.get(Companion.SIEGER - 1);
 			System.out.println(sieger.getName() + "\t" + sieger.getAmount() + "명 배치 가능합니다");
 			return inputNumber(sieger.getAmount());
 		}
 		return 0;
+	}
+
+	public int showCastleManage() {
+		String[] castleManage = { "기기 설치", "자원 회수" };
+		for (int i = 1; i <= castleManage.length; i++) {
+			System.out.println(i + ". " + castleManage[i - 1]);
+		}
+		return inputNo(castleManage.length);
+	}
+
+	public int showGenerator() {
+		String[] generator = { "금광 설치", "농장 설치", "재활용 기계 설치" };
+		for (int i = 1; i <= generator.length; i++) {
+			System.out.println(i + ". " + generator[i - 1]);
+		}
+		return inputNo(generator.length);
+	}
+
+	public int showCollector(int no) {
+		if (no == ActionModel.COLLECT_RESOURCE) {
+			String[] collect = { "자원 회수" };
+			for (int i = 1; i <= collect.length; i++) {
+				System.out.println(i + ". " + collect[i - 1]);
+			}
+			return inputNo(collect.length);
+		}
+		return 0;
+	}
+
+	public int showGoldGenerator() {
+		String[] goldGenerator = GoldGenerator.names;
+		for (int i = 1; i <= goldGenerator.length; i++) {
+			System.out.println(i + ". " + goldGenerator[i - 1] + " 생산");
+		}
+		return inputNo(goldGenerator.length);
+	}
+
+	public void showTest(Character character) {
+		int a = character.goldGeneratorList.get(0).getGold();
+		System.out.println("금광 생산량: "+a);
+
 	}
 }

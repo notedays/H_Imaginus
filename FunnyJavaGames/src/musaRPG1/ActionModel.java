@@ -14,7 +14,8 @@ public class ActionModel {
 	public static final int ITEM_MARKET = 3;
 	public static final int SKILL_LEARN = 4;
 	public static final int MANAGE_RESOURCE = 5;
-	public static final int MANAGE_CASTLE = 6;	//	성 관리
+	public static final int MANAGE_CASTLE = 6; // 성 관리
+	public static final int TEST = 7; //
 
 	// # 전투 코드
 	public static final int NORMAL_ATTACK = 1;
@@ -29,6 +30,15 @@ public class ActionModel {
 	public static final int CASTLE_ATTACK = 4; // 성 공격
 	public static final int SHOW_MY_COMPANY = 5; // 병사 현황
 	public static final int SHOW_MY_CASTLE = 6; // 보유 성 현황
+
+	// # 성 관리 메뉴
+	public static final int INSTALL_MACHINE = 1; // 자원 생성기 메뉴
+	public static final int COLLECT_RESOURCE = 2;
+
+	// # INSTALL_MACHINE 관리 메뉴
+	public static final int INSTALL_GOLD = 1;
+	public static final int INSTALL_FARM = 2;
+	public static final int INSTALL_RECYCLE = 3;
 
 	// # 성 공격
 	public static final int ARCHOR_ATTACK = 1;
@@ -214,7 +224,7 @@ public class ActionModel {
 
 		} else if (soldierList.getAmount() != 0 && attackChoice == Companion.SOLDIER) { // 근거리
 			int soldierTotalAttack = character.companionList.get(Companion.SOLDIER - 1).getAttack();
-	
+
 			// 궁사 공격력 만큼 군량미 소모, 군량미 다쓸 시 전투중단
 			if (character.usdFood(soldierList.getAttack() + 30) == false) {
 				return;
@@ -311,21 +321,34 @@ public class ActionModel {
 	}// 성내 병력배치 끝
 
 	public void makeFood(int no) {
-		//군량미 개당 50원
-		if( character.useMoney(no * 50) == true){
+		// 군량미 개당 50원
+		if (character.useMoney(no * 50) == true) {
 			int myFood = (character.getFood() + no);
 			character.setFood(myFood);
-		}else{
+		} else {
 			return;
 		}
 	}
-	
-	public void generateGold(int no){
+
+	public void generateGold(int no) {
 		
-		Thread t = new Thread(new GoldGenerator(no));
+		GoldGenerator t = new GoldGenerator(no);
+		character.goldGeneratorList.add(t);
 		t.setDaemon(true);
 		t.start();
-		
 	}
 
+	public void collectGold() {
+		List<GoldGenerator> goldGeneratorList = character.goldGeneratorList;
+		for (int i = 0; i < goldGeneratorList.size(); i++) {
+			if (goldGeneratorList.get(i).getGold() == goldGeneratorList.get(i).getMaxGold()) {
+				goldGeneratorList.get(i).gatherMoney(character);
+				goldGeneratorList.get(i).run();
+			}else{
+				goldGeneratorList.get(i).gatherMoney(character);
+			}
+		}
+		System.out.println("골드 수거 완료");
+		System.out.println(character.getMoney()+"원 보유 중");
+	}
 }// actionModel문 종료

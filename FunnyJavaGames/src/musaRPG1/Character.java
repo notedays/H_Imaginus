@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum Character {
-	MUHYUL(1, "무휼", "초급 의병장", 1, 5, 0, 1, 1000, 100, 10, 10, 10000, 100,
+	MUHYUL(1, "무휼", "초급 의병장", 1, 5, 0, 100, 100, 100, 10, 10, 10000, 100,
 			new Inventory<Item>(), new ArrayList<Skill>(),
 			new ArrayList<Castles>(), new ArrayList<Companion>(), new ArrayList<GoldGenerator>() ),
 	
-	ILJIMAE(2, "일지매", "초급 의병장", 1, 5, 0, 1, 1000, 100, 10, 10, 10000, 100,
+	ILJIMAE(2, "일지매", "초급 의병장", 1, 5, 0, 100, 100, 100, 10, 10, 10000, 100,
 			new Inventory<Item>(), new ArrayList<Skill>(),
 			new ArrayList<Castles>(), new ArrayList<Companion>(), new ArrayList<GoldGenerator>() );
 
@@ -56,7 +56,13 @@ public enum Character {
 		
 	}
 
-	// # 추가 메소드
+	// # 추가 메소드	
+	
+	
+	public void getMoney(int obtainMoney){
+		this.money += obtainMoney;
+	}
+	
 	public boolean usdFood(int useFood){
 		if(food >= useFood){
 			this.food -= useFood;

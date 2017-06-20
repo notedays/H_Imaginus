@@ -19,6 +19,7 @@ public class MusaRpg {
 
 	// # 캐릭터
 	Character character;
+	
 
 	// # Action 행동 제어 클래스 -- 싱글 톤 적용
 	ActionModel action = ActionModel.getInstance();
@@ -41,6 +42,12 @@ public class MusaRpg {
 		character.companionList.get(0).addAmount(1);
 		character.companionList.get(1).addAmount(1);
 		character.companionList.get(2).addAmount(1);
+		
+		// # 골드 생산기 쓰레드 실행
+		List<GoldGenerator> goldGeneratorList = character.goldGeneratorList;
+		for(int i=0; i < goldGeneratorList.size(); i++){
+			goldGeneratorList.get(i).start();
+		}
 
 		String[] musics = { "muhyul_bgm.mp3", "iljimae_bgm.mp3" };
 		// # 배경 음악 재생
@@ -80,7 +87,6 @@ public class MusaRpg {
 
 			break;
 		case ActionModel.ITEM_MARKET:
-
 			break;
 
 		case ActionModel.SKILL_LEARN:
@@ -88,13 +94,19 @@ public class MusaRpg {
 			learnSkill(choiceSkill);
 			break;
 
-		case ActionModel.MANAGE_RESOURCE:
+		case ActionModel.MANAGE_RESOURCE :
 			int manageNo = view.selectManage();
 			manageResource(manageNo);
+			break;
 			
-		case ActionModel.MANAGE_CASTLE:
-			action.generateGold(1);
+		case ActionModel.MANAGE_CASTLE :
+			int castleNo = view.showCastleManage();
+			manageCastle(castleNo);
+			break;
 			
+		case ActionModel.TEST :
+			view.showTest(character);
+			break;
 			
 		}
 	}
@@ -206,5 +218,30 @@ public class MusaRpg {
 
 		}
 	}
+	
+	public void manageCastle(int manageCastle){
+		switch (manageCastle) {
+		case ActionModel.INSTALL_MACHINE:
+			int choice = view.showGenerator();
+			switch (choice) {
+			case ActionModel.INSTALL_GOLD:
+				int goldChoice = view.showGoldGenerator();
+				action.generateGold(goldChoice);
+				break;
 
+			case ActionModel.INSTALL_FARM:
+				break;
+				
+			case ActionModel.INSTALL_RECYCLE:
+			
+				break;
+			}
+			break;
+
+		case ActionModel.COLLECT_RESOURCE:
+			action.collectGold();
+			
+			break;
+		}
+	}
 }

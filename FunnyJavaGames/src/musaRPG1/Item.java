@@ -1,7 +1,6 @@
 package musaRPG1;
 
 public enum Item {
-	
 	// # 무기(100~199)
 	WOOD_SWORD(100,"목검","연습용으로 많이 쓰이는 목검", 7),
 	WOOD_LONG_SWORD(101, "긴 목검", "살상이 가능한 목검", 9),

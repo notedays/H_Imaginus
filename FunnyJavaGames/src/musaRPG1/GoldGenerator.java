@@ -1,37 +1,57 @@
 package musaRPG1;
 
-public class GoldGenerator implements Runnable {
+public class GoldGenerator extends Thread {
 
 	private int code;
 	private int gold;
+	private int maxGold;
 	private int duration;
 	private int maxDuration;
+	private int time;
 	private String name;
-	private String[] names = { "최하급 금광", "하급 금광", "중급 금광", "중상급 금광", "최상급 금광" };
+	static public String[] names = { "최하급 금광", "하급 금광", "중급 금광", "중상급 금광", "최상급 금광" };
 
 	public GoldGenerator(int code) {
 		this.code = code;
-		this.gold = (int) (100 + code * 0.3);
+		this.gold = 0;
+		this.maxGold = 300000;
 		this.duration = 100;
 		this.maxDuration = 100;
 		this.name = names[code - 1];
+		this.time = code * 3000;
 	}
 
 	public void run() {
 		while (true) {
 			try {
-				Thread.sleep(1000);
+				gold += code;
+				Thread.sleep(10 / code + 100);
+				if (gold >= maxGold) {
+					System.out.println("골드 광산이 꽉참");
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			gold += 10;
-			System.out.println("골드를 10원 생산합니다");
-		}
+		} 
+	}
+
+	public void gatherMoney(Character character) {
+		character.getMoney(gold);
+		this.gold = 0;
 	}
 
 	// getter, setter
+
 	public int getCode() {
 		return code;
+	}
+
+	public int getMaxGold() {
+		return maxGold;
+	}
+
+	public void setMaxGold(int maxGold) {
+		this.maxGold = maxGold;
 	}
 
 	public void setCode(int code) {
@@ -62,12 +82,12 @@ public class GoldGenerator implements Runnable {
 		this.maxDuration = maxDuration;
 	}
 
-	public String[] getNames() {
-		return names;
+	public int getTime() {
+		return time;
 	}
 
-	public void setNames(String[] names) {
-		this.names = names;
+	public void setTime(int time) {
+		this.time = time;
 	}
 
 }
