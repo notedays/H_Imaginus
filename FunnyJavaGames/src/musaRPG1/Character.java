@@ -56,6 +56,10 @@ public enum Character {
 
 	// # 추가 메소드	
 	
+	public void setLevel(int setLevel){
+		this.level = setLevel;
+	}
+	
 	public void getFood(int obtainFood){
 		this.food += obtainFood;
 	}

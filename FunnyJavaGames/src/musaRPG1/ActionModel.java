@@ -48,12 +48,11 @@ public class ActionModel {
 	// # 스킬 코드(SKILL_LEARN)
 	public static final int LEARN_SKILL = 1;
 	public static final int DELETE_SKILL = 2;
-	
-	// # 포션 사용 코드 
+
+	// # 포션 사용 코드
 	public static final int USE_HP_PORTION = 1;
 	public static final int USE_MP_PORTION = 2;
-	
-	
+
 	View view = new View();
 
 	// # 싱글 톤
@@ -99,8 +98,11 @@ public class ActionModel {
 		System.out.println("전투 시작");
 		System.out.println(enemy.getName() + "의 HP는 " + enemyHp + "입니다");
 		System.out.println(character.getName() + "의 HP는 " + characterHp + "입니다");
-		if (characterHp == 0)
+
+		if (characterHp == 0) {
 			character.die();
+		}
+
 		if (enemyHp == 0) {
 			Item item = enemy.dropItem();
 			character.battleWin(enemy.getExp(), item);
@@ -336,57 +338,63 @@ public class ActionModel {
 	}
 
 	public void generateGold(int no, int castleChoice) {
-		List<GoldGenerator> goldGeneratorList = character.castles.get(castleChoice-1).goldGeneratorList;
-		GoldGenerator t = new GoldGenerator(no);
-		goldGeneratorList.add(t);
-		t.setDaemon(true);
-		t.start();
-		int money = GoldGenerator.prices[no-1];
-		character.useMoney(money);
+		int money = GoldGenerator.prices[no - 1];
+		if(character.getMoney() >= money){
+			List<GoldGenerator> goldGeneratorList = character.castles.get(castleChoice - 1).goldGeneratorList;
+			GoldGenerator t = new GoldGenerator(no);
+			goldGeneratorList.add(t);
+			t.setDaemon(true);
+			t.start();
+			character.useMoney(money);
+		}else{
+			System.out.println("돈이 부족합니다");
+		}
 	}
 
 	public void collectGold(int castleChoice) {
-		List<GoldGenerator> goldGeneratorList = character.castles.get(castleChoice-1).goldGeneratorList;
+		List<GoldGenerator> goldGeneratorList = character.castles.get(castleChoice - 1).goldGeneratorList;
 		for (int i = 0; i < goldGeneratorList.size(); i++) {
-				goldGeneratorList.get(i).gatherMoney(character);
-				System.out.println(character.getMoney()+"원 보유 중");
-			}
-		
-		List<FoodGenerator> foodGeneratorList = character.castles.get(castleChoice-1).foodGeneratorList;
-		for (int i = 0; i < foodGeneratorList.size(); i++) {
-				foodGeneratorList.get(i).gatherFood(character);
-				System.out.println(character.getFood()+"석 보유 중");
-			}
+			goldGeneratorList.get(i).gatherMoney(character);
+			System.out.println(character.getMoney() + "원 보유 중");
 		}
-	
+
+		List<FoodGenerator> foodGeneratorList = character.castles.get(castleChoice - 1).foodGeneratorList;
+		for (int i = 0; i < foodGeneratorList.size(); i++) {
+			foodGeneratorList.get(i).gatherFood(character);
+			System.out.println(character.getFood() + "석 보유 중");
+		}
+	}
+
 	public void generateFood(int no, int castleChoice) {
-		List<FoodGenerator> foodGeneratorList = character.castles.get(castleChoice-1).foodGeneratorList;
+		List<FoodGenerator> foodGeneratorList = character.castles.get(castleChoice - 1).foodGeneratorList;
 		FoodGenerator t = new FoodGenerator(no);
 		foodGeneratorList.add(t);
 		t.setDaemon(true);
 		t.start();
-		int money = FoodGenerator.prices[no-1];
+		int money = FoodGenerator.prices[no - 1];
 		character.useMoney(money);
 	}
-	
-	public void usePortion(int no){
+
+	public void usePortion(int no) {
 		switch (no) {
 		case ActionModel.USE_HP_PORTION:
-			int heal = (int)( character.getMaxHp() / 5 );
+			int heal = (int) (character.getMaxHp() / 5);
 			character.plusHp(heal);
-			System.out.println(heal+"만큼 체력 회복");
-			
+			System.out.println(heal + "만큼 체력 회복");
+			System.out.println("내 체력: " + character.getHp());
+
 			character.useMoney(heal);
 			break;
 
 		case ActionModel.USE_MP_PORTION:
-			int healMp = (int)( character.getMaxMp() / 5 );
+			int healMp = (int) (character.getMaxMp() / 5);
 			character.plusMp(healMp);
-			System.out.println(healMp+"만큼 마력 회복");
-			
-			character.useMoney(healMp);			
+			System.out.println(healMp + "만큼 마력 회복");
+			System.out.println("내 마력: " + character.getMp());
+
+			character.useMoney(healMp);
 			break;
 		}
 	}
-	
+
 }// actionModel문 종료
