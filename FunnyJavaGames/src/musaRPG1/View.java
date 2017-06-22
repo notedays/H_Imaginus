@@ -6,9 +6,10 @@ import java.util.Scanner;
 public class View {
 	Scanner sc = new Scanner(System.in);
 
-	public Character selectCharacter() {
+	public Character selectFirstCharacter() {
 		Character[] characterArray = Character.values();
-		for (int i = 1; i <= characterArray.length; i++) {
+		// for (int i = 1; i <= characterArray.length; i++) {
+		for (int i = 1; i <= 2; i++) {
 			System.out.println(i + ". " + characterArray[i - 1].getName());
 		}
 		System.out.print("플레이할 캐릭터를 고르세요 : ");
@@ -19,18 +20,19 @@ public class View {
 		return characterArray[charIdx];
 	}
 
-	public final static String[] actionNames = { "전투 하기", "캐릭터 정보 보기", "아이템 상점", "스킬 배우기", "공성전 관리", "성 관리"};
+	public final static String[] actionNames = { "전투 하기", "캐릭터 정보 보기", "아이템 상점", "스킬 배우기", "공성전 관리", "성 관리", "전직" };
 
-	public void showCharacter(Character character){
+	public void showCharacter(Character character) {
+		System.out.println(character.getName());
 		System.out.println("내 레벨: " + character.getLevel());
 		System.out.println("내 체력: " + character.getHp() + "/" + character.getMaxHp());
 		System.out.println("내 마력: " + character.getMp() + "/" + character.getMaxMp());
 		System.out.println("내 경험치: " + character.getExp() + "/" + character.getMaxExp());
 		System.out.println("내 공격력: " + character.getAttack());
 		System.out.println("내 소지금: " + character.getMoney());
-		
+
 	}
-	
+
 	public int selectAction(Character character) {
 		System.out.println("\n플레이어 [ " + character.getName() + " ] ");
 		for (int i = 1; i <= actionNames.length; i++) {
@@ -53,7 +55,7 @@ public class View {
 		System.out.println("사용할 스킬 목록");
 		int size = character.getSkillList().size();
 		for (int i = 1; i <= size; i++) {
-			System.out.print(i + ". " + character.getSkillList().get(i - 1) + "\t");
+			System.out.print(i + ". " + character.getSkillList().get(i - 1).getName() + "\t");
 			System.out.println();
 		}
 		return inputNo(size);
@@ -74,6 +76,21 @@ public class View {
 		return no;
 	}
 
+	public int inputNoRange(int startNo) {
+		int no = -1;
+		do {
+			System.out.print("무엇을 하시겠습니까? : ");
+			try {
+				no = sc.nextInt();
+			} catch (Exception e) {
+				System.out.println("잘못된 번호를 입력하였습니다.");
+			} finally {
+				sc.nextLine();
+			}
+		} while (no < startNo || no >= startNo + 4); // false, false
+		return no;
+	}
+
 	public int inputNumber(int limitNo) {
 		int no = -1;
 		do {
@@ -89,18 +106,18 @@ public class View {
 		return no;
 	}
 
-	public int learnSkill() {
+	public int learnSkill(int code) {
 		Skill[] skillList = Skill.values();
-		System.out.println("배울 수 있는 스킬 목록.");
-		for (int i = 1; i <= skillList.length; i++) {
-			System.out.print(i + ". " + skillList[i - 1].getName() + "  ");
-			System.out.print(" 요구 레벨: " + skillList[i - 1].getLevelLimit());
-			System.out.print(" 피해량: " + skillList[i - 1].getDamage());
-			System.out.print(" 마나소모: " + skillList[i - 1].getConsumeChakura());
-			System.out.print(" " + skillList[i - 1].getExplanation());
-			System.out.println();
+		int i;
+		for (i = 0; i < skillList.length; i++) {
+			if (skillList[i].getCode() == code) {
+				for (int j = 0; j < 4; j++) {
+					System.out.println((i + j) + ". " + skillList[i + j].getName());
+				}
+				return inputNoRange(i);
+			}
 		}
-		return inputNo(skillList.length);
+		return 0;
 	}
 
 	public int deleteSkill(Character character) {
@@ -186,7 +203,6 @@ public class View {
 		}
 		return inputNo(character.castles.size());
 	}
-	
 
 	public int deployCompanion(Character character) {
 		List<Companion> companionList = character.companionList;
@@ -296,7 +312,7 @@ public class View {
 		}
 		return inputNo(goldGenerator.length);
 	}
-	
+
 	public int showFoodGenerator() {
 		String[] foodGenerator = FoodGenerator.names;
 		for (int i = 1; i <= foodGenerator.length; i++) {
@@ -304,13 +320,37 @@ public class View {
 		}
 		return inputNo(foodGenerator.length);
 	}
-	
-	public int showPortion(){
-		String[] portionName = {"빨간 물약", "파란 물약"};
+
+	public int showPortion() {
+		String[] portionName = { "빨간 물약", "파란 물약" };
 		for (int i = 1; i <= portionName.length; i++) {
 			System.out.println(i + ". " + portionName[i - 1] + "을 사용합니다");
 		}
 		return inputNo(portionName.length);
 	}
+
+	public int showAttribute() {
+		String[] className = { "불 계열", "얼음 계열" };
+		for (int i = 1; i <= className.length; i++) {
+			System.out.println(i + ". " + className[i - 1] + "을 선택합니다");
+		}
+		return inputNo(className.length);
+	}
+
+	public int showFireClass() {
+			String[] className = { "불꽃 무사", "화염 무사", "용암 무사"};
+			for (int i = 1; i <= className.length; i++) {
+				System.out.println(i + ". " + className[i - 1] + "로 전직 합니다");
+			}return inputNo(className.length);
+	}
+
+	public int showIceClass() {
+			String[] className = { "냉기 무사", "얼음 무사", "빙하 무사"};
+			for (int i = 1; i <= className.length; i++) {
+				System.out.println(i + ". " + className[i - 1] + "로 전직 합니다");
+			}return inputNo(className.length);
+	}
+	
+	
 	
 }

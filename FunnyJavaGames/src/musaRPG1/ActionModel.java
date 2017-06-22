@@ -14,8 +14,8 @@ public class ActionModel {
 	public static final int ITEM_MARKET = 3;
 	public static final int SKILL_LEARN = 4;
 	public static final int MANAGE_RESOURCE = 5;
-	public static final int MANAGE_CASTLE = 6; // 성 관리
-	public static final int TEST = 7; //
+	public static final int MANAGE_CASTLE = 6;
+	public static final int CHANGE_CLASS = 7;
 
 	// # 전투 코드
 	public static final int NORMAL_ATTACK = 1;
@@ -53,6 +53,21 @@ public class ActionModel {
 	public static final int USE_HP_PORTION = 1;
 	public static final int USE_MP_PORTION = 2;
 
+	// # 전직 계열 구분
+	public static final int FIRE = 1;
+	public static final int ICE = 2;
+
+	// # 전직 클래스 구분
+	public static final int NORMAL_MUSA = 000;
+
+	public static final int FIRE_MUSA = 100;
+	public static final int FLAME_MUSA = 200;
+	public static final int LAVA_MUSA = 300;
+
+	public static final int CHILL_MUSA = 400;
+	public static final int ICE_MUSA = 500;
+	public static final int GLACIER_MUSA = 600;
+
 	View view = new View();
 
 	// # 싱글 톤
@@ -70,17 +85,15 @@ public class ActionModel {
 
 	public void initialize(Character character) {
 		this.character = character;
-		character.skillList.add(Skill.KNIFE_THROW); // 기초 스킬 설정
 	}
 
 	public Enemy generateEnemy() {
 		return new Enemy(character.getLevel());
 	}
 
-	public Skill learnSkills(int no) {
+	public void learnSkills(int no) {
 		Skill[] skillList = Skill.values();
-		character.learnSkill(skillList[no - 1]);
-		return skillList[no - 1];
+		character.learnSkill(skillList[no]);
 	}
 
 	public void deleteSkill(int no) {
@@ -114,7 +127,7 @@ public class ActionModel {
 	public void useSkill(int no, Enemy enemy) {
 		Skill targetSkill = character.getSkillList().get(no - 1);
 		if (character.getMp() >= targetSkill.getConsumeChakura()) {
-			System.out.println(character.getSkillList().get(no - 1) + "!!!");
+			System.out.println(character.getSkillList().get(no - 1).getName() + "!!!");
 			int enemyHp = enemy.getDamaged(character.getSkillList().get(no - 1).getDamage());
 			System.out.println(enemy.getName() + "의 HP는 " + enemyHp + "입니다");
 
@@ -339,14 +352,14 @@ public class ActionModel {
 
 	public void generateGold(int no, int castleChoice) {
 		int money = GoldGenerator.prices[no - 1];
-		if(character.getMoney() >= money){
+		if (character.getMoney() >= money) {
 			List<GoldGenerator> goldGeneratorList = character.castles.get(castleChoice - 1).goldGeneratorList;
 			GoldGenerator t = new GoldGenerator(no);
 			goldGeneratorList.add(t);
 			t.setDaemon(true);
 			t.start();
 			character.useMoney(money);
-		}else{
+		} else {
 			System.out.println("돈이 부족합니다");
 		}
 	}
@@ -395,6 +408,53 @@ public class ActionModel {
 			character.useMoney(healMp);
 			break;
 		}
+	}
+
+	public void changeFireClass(int classChoice) {
+		// 불꽃 무사 전직
+		// 전직을 안한 상태 라면
+		if ( character.getLevel() >= 10 && character.getLevel() < 20 ) {
+			if (character.isMemory() == true) {
+				Character [] a = Character.values();
+				MusaRpg.character = a[FIRE_MUSA / 100 + 1];
+				
+				System.out.println("전직 성공");
+				character.setMemory(false);	// 전직했으니 변경
+				
+			} else if (character.isMemory() == false) {
+				System.out.println("이미 전직을 한 상태 입니다");
+			}
+			
+		} else if ( character.getLevel() >= 20 && character.getLevel() < 29 ) {
+			if (character.isMemory() == true) {
+				Character [] a = Character.values();
+				MusaRpg.character = a[FLAME_MUSA / 100];
+				
+				System.out.println("전직 성공");
+				character.setMemory(false);	// 전직했으니 변경
+				
+			} else if (character.isMemory() == false) {
+				System.out.println("이미 전직을 한 상태 입니다");
+			}
+		} else if ( character.getLevel() >= 30 ){
+			if (character.isMemory() == true) {
+				Character [] a = Character.values();
+				MusaRpg.character = a[LAVA_MUSA / 100];
+				
+				System.out.println("전직 성공");
+				character.setMemory(false);	// 전직했으니 변경
+				
+			} else if (character.isMemory() == false) {
+				System.out.println("이미 전직을 한 상태 입니다");
+			}
+		}
+		
+	}
+
+	public void changeIceClass(int classChoice) {
+		if (character.getLevel() >= 10 && character.getLevel() < 20) {
+		}
+
 	}
 
 }// actionModel문 종료

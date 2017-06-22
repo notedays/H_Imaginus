@@ -19,9 +19,9 @@ public class Enemy {
 	private List<Skill> skillList = new ArrayList<Skill>();
 	
 	public static final String names[] = {"미친 개	","반달 곰","호랑이","처녀 귀신","도깨비","산적","낭인 무사","퇴역 장군","검객","용산 검수","무영검 영호","백대 고수 : 십권","십대 고수 : 천검","혈교 호법 : 혈권","혈교 장로 : 혈편자","혈교 문주 : 혈문도","검선 : 천기자","조선 제일검 : 역천"};
-	private static final Item items[] = { Item.DOG_BORN, Item.BEAR_SKIN, Item.BEAR_SKIN, Item.GHOST_BLOOD };
-	private static final float itemRates[] = { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f};
-	private static final int moneyDrop[] = {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000};
+	private static final Item items[] = { Item.DOG_BORN, Item.BEAR_SKIN, Item.BEAR_SKIN, Item.GHOST_BLOOD,Item.GHOST_BLOOD,Item.GHOST_BLOOD,Item.GHOST_BLOOD,Item.GHOST_BLOOD,Item.GHOST_BLOOD,Item.GHOST_BLOOD,Item.GHOST_BLOOD,Item.GHOST_BLOOD, };
+	private static final float itemRates[] = { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f};
+	private static final int moneyDrop[] = {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000};
 	
 	
 	public Enemy( int level ) {

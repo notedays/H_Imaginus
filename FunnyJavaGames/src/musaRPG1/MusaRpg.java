@@ -1,8 +1,6 @@
 package musaRPG1;
 
 import java.io.File;
-import java.nio.channels.GatheringByteChannel;
-import java.nio.channels.ShutdownChannelGroupException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,8 +16,10 @@ public class MusaRpg {
 	View view = new View();
 
 	// # 캐릭터
-	Character character;
+	static Character character;
 	
+	// # 캐릭터 속성(불 = 1, 얼음 = 2)
+	int attributeChoice;
 
 	// # Action 행동 제어 클래스 -- 싱글 톤 적용
 	ActionModel action = ActionModel.getInstance();
@@ -29,10 +29,10 @@ public class MusaRpg {
 		System.out.println("===== Musa RPG ver." + version + " =====");
 
 		// # 캐릭터 선택
-		character = view.selectCharacter();
+		character = view.selectFirstCharacter();
 		action.initialize(character);
 
-		// # 시작 동료 유닛 빈 값 형성
+		// # 시작 동료 유닛 빈 값 형성(테스트 용) 
 		Companion archor = new Companion(Companion.ARCHOR, character.getLevel());
 		Companion soldier = new Companion(Companion.SOLDIER, character.getLevel());
 		Companion seiger = new Companion(Companion.SIEGER, character.getLevel());
@@ -81,6 +81,7 @@ public class MusaRpg {
 			view.showCharacter(character);
 			view.showMyCompanion(character);
 			break;
+			
 		case ActionModel.ITEM_MARKET:
 			break;
 
@@ -89,29 +90,51 @@ public class MusaRpg {
 			learnSkill(choiceSkill);
 			break;
 
-		case ActionModel.MANAGE_RESOURCE :
+		case ActionModel.MANAGE_RESOURCE:
 			int manageNo = view.selectManage();
 			manageResource(manageNo);
 			break;
-			
-		case ActionModel.MANAGE_CASTLE :
+
+		case ActionModel.MANAGE_CASTLE:
 			int castleNo = view.showCastleManage();
 			int castleChoiceNo = view.showMyCastle(character);
 			manageCastle(castleNo, castleChoiceNo);
 			break;
-			
-		case ActionModel.TEST :
+
+		case ActionModel.CHANGE_CLASS:
+			changeClass();
+
+			// action.initialize(Character character);
 			break;
-			
 		}
 	}
 
 	// 컨트롤러 메소드
+	private void changeClass() {
+		int classChoice = 0;
+		if ( attributeChoice != 1 && attributeChoice !=2) {
+			System.out.println("속성을 선택 한다");
+			// 속성 부여
+			attributeChoice = view.showAttribute();
+			System.out.println("속성 부여 완료");
+
+		} else if (character.getLevel() == 10 || character.getLevel() == 20 || character.getLevel() == 30) {
+			if (attributeChoice == ActionModel.FIRE) {
+				classChoice = view.showFireClass();
+				action.changeFireClass(classChoice);
+
+			} else if (attributeChoice == ActionModel.ICE) {
+				classChoice = view.showIceClass();
+				action.changeIceClass(classChoice);
+			}
+		}
+	}
+
 	private void learnSkill(int choiceSkill) {
 		switch (choiceSkill) {
 		case ActionModel.LEARN_SKILL:
-			int learnSkill = view.learnSkill();
-			action.learnSkills(learnSkill);
+			int learnSkills = view.learnSkill(character.getChangeCode());
+			action.learnSkills(learnSkills);
 			break;
 
 		case ActionModel.DELETE_SKILL:
@@ -143,11 +166,11 @@ public class MusaRpg {
 				enemy.setHp(0);
 			}
 			break;
-			
+
 		case ActionModel.USE_PORTION:
 			int choosePortion = view.showPortion();
 			action.usePortion(choosePortion);
-			
+
 		}
 	}
 
@@ -177,8 +200,7 @@ public class MusaRpg {
 				int numberChoice = view.castleNumberCompanion(character, deployChoice);
 				Castles myCastle = character.castles.get(chooseCastle - 1);
 				action.makeDeploy(myCastle, deployChoice, numberChoice);
-				
-				
+
 			} catch (Exception e) {
 				System.out.println("배치 할 성이 없습니다");
 			}
@@ -192,14 +214,14 @@ public class MusaRpg {
 			if (character.castles.contains(castle)) {
 				System.out.println("이미 보유한 성입니다");
 			} else {
-				//	군량미가 0보다 큰 경우 공성 가능 
+				// 군량미가 0보다 큰 경우 공성 가능
 				if (character.getFood() > 0) {
 					// 적 성의피가 0이 되거나 내 군량미가 0 보다 작아지는 경우 와일문 종료
 					while (castle.getCastleHp() > 0 && character.getFood() > 0) {
 						int attackChoice = view.selectCastleBattle();
 						action.castleAttack(castle, attackChoice);
 					}
-				}else{
+				} else {
 					System.out.println("군량미 부족으로 전투 불가");
 				}
 			}
@@ -218,8 +240,8 @@ public class MusaRpg {
 
 		}
 	}
-	
-	public void manageCastle(int manageCastle, int castleChoice){
+
+	public void manageCastle(int manageCastle, int castleChoice) {
 		switch (manageCastle) {
 		case ActionModel.INSTALL_MACHINE:
 			int choice = view.showGenerator();
@@ -240,8 +262,7 @@ public class MusaRpg {
 			// 한꺼번에 자원 수확
 			action.collectGold(castleChoice);
 			break;
-			
-			
+
 		}
 	}
 }
